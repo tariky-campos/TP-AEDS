@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "ListaSondasEspaciais.h"
+#include <float.h>
 
 // Função para mover todas as sondas para o ponto (0,0)
 void MoverSondasParaOrigem(Tlista *listasondas) {
@@ -73,6 +74,46 @@ void RedistribuirRochas(Tlista *listasondas) {
         atual = atual->pProx;
     }
 }
+    // Função para calcular a distância entre duas sondas (baseada em latitude e longitude)
+float CalcularDistancia(float lat1, float lon1, float lat2, float lon2) {
+    // Usando a fórmula de distância euclidiana simples (aproximação para pequenas distâncias)
+    return sqrt(pow(lat2 - lat1, 2) + pow(lon2 - lon1, 2));
+}
+
+// Função para adicionar a rocha na sonda mais próxima
+void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRocha) {
+    if (LehVazia(listasondas)) {
+        printf("A lista de sondas está vazia.\n");
+        return;
+    }
+
+    TCelula *atual = listasondas->pPrimeiro->pProx;
+    DadosSonda *sondaMaisProxima = NULL;
+    float menorDistancia = FLT_MAX; // Começa com a maior distância possível
+
+    // Encontra a sonda mais próxima
+    while (atual != NULL) {
+        DadosSonda *sonda = &atual->sonda;
+        float distancia = CalcularDistancia(novaRocha->localizacao.latituderocha, novaRocha->localizacao.longituderocha, sonda->Latitude, sonda->Longitude);
+        
+        if (distancia < menorDistancia) {
+            menorDistancia = distancia;
+            sondaMaisProxima = sonda;
+        }
+
+        atual = atual->pProx;
+    }
+
+    // Adiciona a rocha à sonda mais próxima
+    if (sondaMaisProxima != NULL) {
+        linsererocha(&sondaMaisProxima->compartimento, novaRocha); // Adiciona a rocha ao compartimento da sonda
+        printf("Rocha adicionada à sonda %d (Distância: %.2f)\n", sondaMaisProxima->Identificador, menorDistancia);
+    } else {
+        printf("Nenhuma sonda disponível para adicionar a rocha.\n");
+    }
+}
+
+
 
 int main() {
     Tlista listasondas;
