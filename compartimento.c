@@ -45,12 +45,24 @@ int lretirarocha(tlistarocha* plistarocha, rochamineral* procha){
     return 1;
 }//confere se o compartimento esta vazio e retira rocha
 
-void limprimerocha(tlistarocha* plistarocha){
-    Apontador_c paux;
-    paux=plistarocha->pprimeiro->pprox;
-    while(paux!=NULL){
-        printf("%s %.2f\n",paux->rocha.categoria, paux->rocha.peso);
-        paux=paux->pprox;
+void limprimerocha(tlistarocha *compartimento) {
+    if (lehvaziarocha(compartimento)) {
+        printf("Compartimento vazio!\n");
+        return;
+    }
+
+    tcelula *atual = compartimento->pprimeiro->pprox;
+    while (atual != NULL) {
+        rochamineral *rocha = &atual->rocha;
+        printf("Rocha ID: %d\n", rocha->idrocha);
+        printf("%s %2f \n", rocha->categoria, rocha->peso);
+        
+        for (int i = rocha->listamineral.Primeiro; i < rocha->listamineral.Ultimo; i++) {
+            printf("%s ", rocha->listamineral.Item[i].mineral.nome);
+        }
+        printf("\n");
+        
+        atual = atual->pprox;
     }
 } // imprime compartimento
 
