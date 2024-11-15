@@ -166,6 +166,7 @@ int main() {
             novaRocha.localizacao.latituderocha = latitude;
             novaRocha.localizacao.longituderocha = longitude;
 
+<<<<<<< HEAD
             AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);
         } 
         else if (comando == 'I') {
@@ -185,6 +186,23 @@ int main() {
                 }
                 printf("\n");
             }
+=======
+        } 
+        else if (comando == 'I') {
+            if (LehVazia(&listasondas)) {
+            printf("A lista de sondas está vazia.\n");
+            } else {
+            printf("Imprimindo status atual das sondas:\n");
+            TCelula *atual = listasondas.pPrimeiro->pProx;
+            while (atual != NULL) {
+            DadosSonda *sonda = &atual->sonda;
+            printf("Sonda %d:\n", sonda->Identificador);
+            limprimerocha(&sonda->compartimento); // Supondo que essa função imprime as rochas no compartimento
+            atual = atual->pProx;
+        }
+    }
+    printf("\n");
+>>>>>>> 724d71f096bbbd11c00f8f7c77468fa981148ad7
         } else if (comando == 'E') {
             printf("Executando redistribuicao...\n");
             MoverSondasParaOrigem(&listasondas);
