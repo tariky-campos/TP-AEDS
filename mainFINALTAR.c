@@ -185,10 +185,21 @@ int main() {
             novaRocha.peso = peso;
             linsererocha(&compartimento, &novaRocha); 
 
-        } else if (comando == 'I') {
+        } 
+        else if (comando == 'I') {
+            if (LehVazia(&listasondas)) {
+            printf("A lista de sondas está vazia.\n");
+            } else {
             printf("Imprimindo status atual das sondas:\n");
-            limprimerocha(&compartimento);
-            printf("\n");
+            TCelula *atual = listasondas.pPrimeiro->pProx;
+            while (atual != NULL) {
+            DadosSonda *sonda = &atual->sonda;
+            printf("Sonda %d:\n", sonda->Identificador);
+            limprimerocha(&sonda->compartimento); // Supondo que essa função imprime as rochas no compartimento
+            atual = atual->pProx;
+        }
+    }
+    printf("\n");
         } else if (comando == 'E') {
             printf("Executando redistribuicao...\n");
             MoverSondasParaOrigem(&listasondas);
