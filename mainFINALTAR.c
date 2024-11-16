@@ -119,7 +119,7 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
     while (atual != NULL) {
         DadosSonda *sonda = &atual->sonda;
         float distancia = CalcularDistancia(novaRocha->localizacao.latituderocha, novaRocha->localizacao.longituderocha, sonda->Latitude, sonda->Longitude);
-        
+
         if (distancia < menorDistancia) {
             menorDistancia = distancia;
             sondaMaisProxima = sonda;
@@ -136,11 +136,42 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
     }
 }
 
+// Processa o comando para adicionar uma nova rocha
+void ProcessarComandoAdicionarRocha(Tlista *listasondas) {
+    float latitude, longitude, peso;
+    char mineral1[50], mineral2[50];
+    scanf("%f %f %f %s %s", &latitude, &longitude, &peso, mineral1, mineral2);
+
+    rochamineral novaRocha;
+    tlistamineral listaMinerais;
+    flvaziamineral(&listaMinerais);
+
+    if (strcmp(mineral1, "-") != 0) {
+        Minerais m1;
+        RetornaMineral(&m1, mineral1);
+        linsereMineral(&listaMinerais, &m1);
+    }
+    if (strcmp(mineral2, "-") != 0) {
+        Minerais m2;
+        RetornaMineral(&m2, mineral2);
+        linsereMineral(&listaMinerais, &m2);
+    }
+
+    set_idrocha(&novaRocha, GeraIdUnico());
+    set_peso(&novaRocha, peso);
+    set_localizacao(&novaRocha, &(localizacao){latitude, longitude});
+    set_listamineral(&novaRocha, &listaMinerais);
+    DefCategoria(&novaRocha);
+
+    AdicionarRochaNaSondaMaisProxima(listasondas, &novaRocha);
+}
+
+// Função principal
 int main() {
     Tlista listasondas;
-    int n_sondas;
     FLvazia(&listasondas);
 
+    int n_sondas;
     printf("Numero de sondas: ");
     scanf("%d", &n_sondas);
 
@@ -204,18 +235,9 @@ int main() {
             ExecutarComandoI(&listasondas);
                   
         } else if (comando == 'E') {
-            printf("Executando redistribuicao...\n");
+            printf("Executando redistribuição...\n");
             MoverSondasParaOrigem(&listasondas);
             RedistribuirRochas(&listasondas);
-            printf("Estado atualizado após redistribuicao:\n");
-            TCelula *atual = listasondas.pPrimeiro->pProx;
-            while (atual != NULL) {
-                DadosSonda *sonda = &atual->sonda;
-                printf("%d\n", sonda->Identificador);
-                limprimerocha(&sonda->compartimento);
-                atual = atual->pProx;
-            }
-            break;
         } else {
             printf("Comando desconhecido: %c\n", comando);
         }
