@@ -47,6 +47,7 @@ char* DefCategoria(rochamineral* rocha){
     return rocha->categoria;
 }
 
+
 void set_idrocha(rochamineral *rocha, int idrocha){
     rocha->idrocha=idrocha;
 }

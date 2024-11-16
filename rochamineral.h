@@ -12,11 +12,12 @@ typedef struct{
 typedef struct{
     int idrocha;
     float peso;
-    char categoria[20];
+    char categoria[50];
     data data;
     localizacao localizacao;
     tlistamineral listamineral;
 }rochamineral;
+
 
 void inicializarocha(rochamineral *rocha, int idrocha,float peso,char *categoria,data *data, localizacao *localizacao, tlistamineral *listamineral);
  void set_idrocha(rochamineral *rocha, int idrocha);
@@ -32,7 +33,7 @@ char* get_categoria(rochamineral *rocha);
 data get_data(rochamineral *rocha);
 localizacao get_localizacao(rochamineral *rocha);
 tlistamineral get_listamineral(rochamineral *rocha);
-
+void classifica_categoria(rochamineral* rocha, int qtdMinerais, tlistamineral* lista_m);
 
 
 
