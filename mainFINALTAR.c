@@ -191,6 +191,7 @@ int main() {
             if (LehVazia(&listasondas)) {
                 printf("A lista de sondas está vazia.\n");
             } else {
+                
                 TCelula *atual = listasondas.pPrimeiro->pProx;
                 while (atual != NULL) {
                     DadosSonda *sonda = &atual->sonda;

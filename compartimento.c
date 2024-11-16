@@ -13,27 +13,27 @@ void flvaziarocha(tlistarocha* plistarocha) {
 int lehvaziarocha(tlistarocha* plistarocha) {
     return (plistarocha->pprimeiro == plistarocha->pultimo);
 } // Confere se o compartimento está vazio
-
 void linsererocha(tlistarocha *plistarocha, rochamineral *procha) {
-    Apontador_c paux = plistarocha->pprimeiro->pprox;
-    while (paux != NULL) {
-        if (strcmp(paux->rocha.categoria, procha->categoria) == 0) {
-            trocarocha(plistarocha, procha);
-            return; 
-        }
-        paux = paux->pprox;
+    // Cria um novo nó para a rocha
+    Apontador_c novaCelula = (Apontador_c)malloc(sizeof(tcelula));
+    if (novaCelula == NULL) {
+        printf("Erro: Falha ao alocar memória para nova rocha.\n");
+        return;
     }
 
-    plistarocha->pultimo->pprox = (Apontador_c)malloc(sizeof(tcelula));
-    plistarocha->pultimo = plistarocha->pultimo->pprox;
+    // Copia os dados da rocha
+    strcpy(novaCelula->rocha.categoria, procha->categoria);
+    novaCelula->rocha.peso = procha->peso;
+    novaCelula->rocha.localizacao = procha->localizacao;
 
-    // Copiando nome e peso corretamente
-    strcpy(plistarocha->pultimo->rocha.categoria, procha->categoria);
-    plistarocha->pultimo->rocha.peso = procha->peso;
+    // Adiciona ao final da lista
+    plistarocha->pultimo->pprox = novaCelula;
+    novaCelula->pprox = NULL;
+    plistarocha->pultimo = novaCelula;
 
-    plistarocha->pultimo->pprox = NULL;
     plistarocha->contador++;
-} // Insere rocha
+}
+
 
 int lretirarocha(tlistarocha* plistarocha, rochamineral* procha) {
     tcelula* paux;
@@ -66,7 +66,14 @@ void limprimeRochaporCategoria(tlistarocha *plistarocha, const char *categoria) 
         printf("Nenhuma rocha encontrada na categoria \"%s\".\n", categoria);
     }
 }
-
+void limprimerocha(tlistarocha* plistarocha){
+    Apontador_c paux;
+    paux=plistarocha->pprimeiro->pprox;
+    while(paux!=NULL){
+        printf("%s %.2f\n",paux->rocha.categoria, paux->rocha.peso);
+        paux=paux->pprox;
+    }
+}
 
 void tamanho(tlistarocha* plistarocha) {
     printf("Tamanho atual: %d\n", plistarocha->contador);

@@ -6,7 +6,7 @@ typedef struct celula* Apontador_c;
 typedef struct celula{
     rochamineral rocha;
     struct celula* pprox;
-}tcelula;
+}tcelula, *Apontador_I;
 
 typedef struct{
     Apontador_c pprimeiro;
@@ -21,12 +21,13 @@ int lretirarocha(tlistarocha* plistarocha, rochamineral *procha);
 void tamanho(tlistarocha* plistarocha);
 void peso(tlistarocha* plistarocha);
 void trocarocha(tlistarocha* plistarocha, rochamineral *procha);
+
 ////////
 void RemoverRochas(tlistarocha *compartimento);
 float PesoTotal(tlistarocha *compartimento);
 void AjustarPeso(tlistarocha *compartimento, float peso_alvo);
 void limprimeRochaporCategoria(tlistarocha *plistarocha, const char *categoria);
-
+void limprimerocha(tlistarocha* plistarocha);
 
 
 #endif
