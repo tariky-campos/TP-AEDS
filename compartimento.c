@@ -48,13 +48,25 @@ int lretirarocha(tlistarocha* plistarocha, rochamineral* procha) {
     return 1;
 } // Confere se o compartimento está vazio e retira rocha
 
-void limprimerocha(tlistarocha* plistarocha) {
+void limprimeRochaporCategoria(tlistarocha *plistarocha, const char *categoria) {
     Apontador_c paux = plistarocha->pprimeiro->pprox;
+    int encontrou = 0; // Flag para verificar se encontrou a categoria
+
+    printf("Rochas na categoria \"%s\":\n", categoria);
     while (paux != NULL) {
-        printf("%s %.2f\n", paux->rocha.categoria, paux->rocha.peso);
+        if (strcmp(paux->rocha.categoria, categoria) == 0) {
+            printf("- Rocha ID: %d | Peso: %.2f | Categoria: %s\n", 
+                   paux->rocha.idrocha, paux->rocha.peso, paux->rocha.categoria);
+            encontrou = 1;
+        }
         paux = paux->pprox;
     }
-} // Imprime o compartimento
+
+    if (!encontrou) {
+        printf("Nenhuma rocha encontrada na categoria \"%s\".\n", categoria);
+    }
+}
+
 
 void tamanho(tlistarocha* plistarocha) {
     printf("Tamanho atual: %d\n", plistarocha->contador);

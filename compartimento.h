@@ -18,7 +18,6 @@ void flvaziarocha(tlistarocha* plistarocha);
 int lehvaziarocha(tlistarocha* plistarocha);
 void linsererocha(tlistarocha* plistarocha, rochamineral *procha);
 int lretirarocha(tlistarocha* plistarocha, rochamineral *procha);
-void limprimerocha(tlistarocha* plistarocha);
 void tamanho(tlistarocha* plistarocha);
 void peso(tlistarocha* plistarocha);
 void trocarocha(tlistarocha* plistarocha, rochamineral *procha);
@@ -26,6 +25,7 @@ void trocarocha(tlistarocha* plistarocha, rochamineral *procha);
 void RemoverRochas(tlistarocha *compartimento);
 float PesoTotal(tlistarocha *compartimento);
 void AjustarPeso(tlistarocha *compartimento, float peso_alvo);
+void limprimeRochaporCategoria(tlistarocha *plistarocha, const char *categoria);
 
 
 

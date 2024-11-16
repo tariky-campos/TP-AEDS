@@ -48,7 +48,7 @@ void RetornaMineral(Minerais* min, char* nome){
         x=0;
     }
     else{
-        printf("Pedra inválida, digite novamente:");
+        printf("Pedra invalida, digite novamente:");
         scanf("%s",nome);  
     }   
     }
