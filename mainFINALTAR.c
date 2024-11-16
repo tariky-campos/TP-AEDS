@@ -10,14 +10,42 @@ void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, cons
     if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Terranita") == 0) ||
         (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Terranita") == 0)) {
         strcpy(rocha->categoria, "Aquaterra");
-    } else if ((strcmp(mineral1, "Ferrolita") == 0 && strcmp(mineral2, "Solarium") == 0) ||
+        
+    }else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+        (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+        strcpy(rocha->categoria, "Aquaferro");
+        
+        
+    }else if ((strcmp(mineral1, "Ferrolita") == 0 && strcmp(mineral2, "Solarium") == 0) ||
                (strcmp(mineral2, "Ferrolita") == 0 && strcmp(mineral1, "Solarium") == 0)) {
         strcpy(rocha->categoria, "Terrasol");
+
     } else if ((strcmp(mineral1, "Calaris") == 0 && strcmp(mineral2, "Terranita") == 0) ||
                (strcmp(mineral2, "Calaris") == 0 && strcmp(mineral1, "Terranita") == 0)) {
         strcpy(rocha->categoria, "Terrolis");
+
     } else if ((strcmp(mineral1, "Ferrolita") == 0) && (strcmp(mineral2, "Ferrolita") == 0)) {
         strcpy(rocha->categoria, "Ferrom");
+
+    }
+     else if ((strcmp(mineral1, "Solarium") == 0) && (strcmp(mineral2, "Solarium") == 0)) {
+        strcpy(rocha->categoria, "Solaris");
+
+    }else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Calaris") == 0) ||
+               (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Calaris") == 0)) {
+        strcpy(rocha->categoria, "Calquer");
+
+    }else if ((strcmp(mineral1, "Solarium") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+               (strcmp(mineral2, "Solarium") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+        strcpy(rocha->categoria, "Solarisfer");
+    
+    }else if ((strcmp(mineral1, "Terranita") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+               (strcmp(mineral2, "Terranita") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+        strcpy(rocha->categoria, "Terralis");
+    
+    
+    
+
     } else {
         strcpy(rocha->categoria, "Sem Categoria"); // Categoria padrão caso não corresponda
     }
