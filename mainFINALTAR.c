@@ -6,6 +6,22 @@
 #include <float.h>
 #include "ListaSondasEspaciais.h"
 
+void DefinirCategoriaPorMinerais1(rochamineral *rocha, const char *mineral1) {
+    if (strcmp(mineral1, "Aquavitae") == 0) {
+        strcpy(rocha->categoria, "Aqua Pura");
+    } else if (strcmp(mineral1, "Terranita") == 0) {
+        strcpy(rocha->categoria, "Terra Pura");
+    } else if (strcmp(mineral1, "Ferrolita") == 0) {
+        strcpy(rocha->categoria, "Ferro Puro");
+    } else if (strcmp(mineral1, "Solarium") == 0) {
+        strcpy(rocha->categoria, "Solar Puro");
+    } else if (strcmp(mineral1, "Calaris") == 0) {
+        strcpy(rocha->categoria, "Cal Puro");
+    } else {
+        strcpy(rocha->categoria, "Sem Categoria"); // Categoria padrão caso o mineral não corresponda
+    }
+}
+
 void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, const char *mineral2) {
     if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Terranita") == 0) ||
         (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Terranita") == 0)) {
@@ -204,7 +220,11 @@ int main() {
             float latitude, longitude, peso;
             char mineral1[50], mineral2[50];
             fflush(stdout);
-            scanf("%f %f %f %s %s", &latitude, &longitude, &peso, mineral1, mineral2);
+            scanf("%f %f %f %s", &latitude, &longitude, &peso, mineral1);
+            char c = getchar();
+            if (c!= '\n'){
+                scanf("%s", mineral2);
+            }
 
             rochamineral novaRocha;
             strcpy(novaRocha.categoria, mineral1);
@@ -212,7 +232,13 @@ int main() {
             novaRocha.localizacao.latituderocha = latitude;
             novaRocha.localizacao.longituderocha = longitude;
 
-            DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2);
+            if (strlen(mineral2)==0){
+                DefinirCategoriaPorMinerais1(&novaRocha, mineral1);
+            }else{
+                DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2);
+            }
+
+           
             AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);
         } 
         else if (comando == 'I') {
