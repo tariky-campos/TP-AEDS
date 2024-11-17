@@ -5,6 +5,7 @@
 #include <float.h>
 #include "ListaSondasEspaciais.h"
 #include "rochamineral.h"
+
 void OrdenarRochas(tlistarocha *lista) {
     if (lista->pprimeiro == NULL || lista->pprimeiro->pprox == NULL)
         return;
@@ -113,18 +114,17 @@ DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float
 }
 
 
-
-void RedistribuirRochas(Tlista *listasondas) {
+void RedistribuirRochasDinamicamente(Tlista *listasondas) {
     if (LehVazia(listasondas)) {
-        printf("A lista de sondas esta vazia.\n");
+        printf("A lista de sondas está vazia.\n");
         return;
     }
 
-   
+    // Lista temporária para armazenar todas as rochas
     tlistarocha lista_temp;
     flvaziarocha(&lista_temp);
 
- 
+    // Remover todas as rochas das sondas para redistribuir
     TCelula *atual = listasondas->pPrimeiro->pProx;
     while (atual != NULL) {
         DadosSonda *sonda = &atual->sonda;
@@ -132,60 +132,66 @@ void RedistribuirRochas(Tlista *listasondas) {
         atual = atual->pProx;
     }
 
-
+    // Redistribuir rochas dinamicamente
     while (!lehvaziarocha(&lista_temp)) {
         rochamineral rocha;
         RemoverPrimeiraRocha(&lista_temp, &rocha);
 
- 
-        DadosSonda *sondaMaisProxima = NULL;
+        DadosSonda *sondaMaisApropriada = NULL;
         float menorDistancia = FLT_MAX;
+        float menorCarga = FLT_MAX;
 
+        // Encontrar a melhor sonda para essa rocha
         atual = listasondas->pPrimeiro->pProx;
         while (atual != NULL) {
             DadosSonda *sonda = &atual->sonda;
-            float distancia = CalcularDistancia(
-                rocha.localizacao.latituderocha,
-                rocha.localizacao.longituderocha,
-                sonda->Latitude,
-                sonda->Longitude
-            );
 
+            // Verificar se a sonda tem capacidade suficiente
             float pesoAtual = PesoTotal(&sonda->compartimento);
-            if (pesoAtual + rocha.peso <= sonda->Capacidade && distancia < menorDistancia) {
-                menorDistancia = distancia;
-                sondaMaisProxima = sonda;
+            if (pesoAtual + rocha.peso <= sonda->Capacidade) {
+                // Calcular a distância entre a sonda e a rocha
+                float distancia = CalcularDistancia(
+                    rocha.localizacao.latituderocha,
+                    rocha.localizacao.longituderocha,
+                    sonda->Latitude,
+                    sonda->Longitude
+                );
+
+                // Escolher a sonda com base em distância e carga mais equilibrada
+                if (distancia < menorDistancia || 
+                   (distancia == menorDistancia && pesoAtual < menorCarga)) {
+                    menorDistancia = distancia;
+                    menorCarga = pesoAtual;
+                    sondaMaisApropriada = sonda;
+                }
             }
 
             atual = atual->pProx;
         }
 
-        if (sondaMaisProxima != NULL) {
-            linsererocha(&sondaMaisProxima->compartimento, &rocha);
+        // Alocar a rocha na melhor sonda encontrada
+        if (sondaMaisApropriada != NULL) {
+            linsererocha(&sondaMaisApropriada->compartimento, &rocha);
             AtualizarLocalizacaoSonda(
-                sondaMaisProxima,
+                sondaMaisApropriada,
                 rocha.localizacao.latituderocha,
                 rocha.localizacao.longituderocha
             );
         } else {
-            printf("Nenhuma sonda disponivel para receber a rocha (peso: %.2f).\n", rocha.peso);
+            printf("Nenhuma sonda disponível para receber a rocha (peso: %.2f).\n", rocha.peso);
         }
     }
 
+    // Ordenar as rochas em cada sonda
     atual = listasondas->pPrimeiro->pProx;
     while (atual != NULL) {
         DadosSonda *sonda = &atual->sonda;
-        OrdenarRochas(&sonda->compartimento); 
+        OrdenarRochas(&sonda->compartimento); // Ordenação opcional
         atual = atual->pProx;
     }
 
-    printf("Redistribucao concluida.\n");
+    printf("Redistribuição dinâmica concluída.\n");
 }
-
-
-float CalcularDistancia(float lat1, float lon1, float lat2, float lon2);
-
-
 
 
 void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRocha) {
@@ -230,9 +236,8 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
   
         linsererocha(&sondaMaisProxima->compartimento, novaRocha);
 
-        printf("Rocha adicionada a sonda %d (Distancia: %.2f, Peso Atual: %.2f, Capacidade Maxima: %.2f)\n", 
+        printf("Rocha adicionada a sonda %d (Peso Atual: %.2f, Capacidade Maxima: %.2f)\n\n", 
                sondaMaisProxima->Identificador, 
-               menorDistancia,
                PesoTotal(&sondaMaisProxima->compartimento),
                sondaMaisProxima->Capacidade);
     } else {
@@ -275,10 +280,12 @@ int main() {
         } else {
             printf("Falha ao inserir a sonda %d.\n", novaSonda.Identificador);
         }
+        LigarSonda(&novaSonda);
+        ExibirStatusSonda(&novaSonda);
     }
 
-    printf("\nLista de Sondas:\n");
-    Imprime(&listasondas);
+    ///printf("\nLista de Sondas:\n");
+    //////
     printf("Sistema inicializado com %d sondas.\n", n_sondas);
 
     printf("Digite o numero de acoes: ");
@@ -288,7 +295,7 @@ int main() {
 
     for (int i = 0; i < n_acoes; i++) {
         char comando;
-        printf("Digite o comando (R/I/E): ");
+        printf("\nDigite o comando (R/I/E): ");
         fflush(stdout);
         scanf(" %c", &comando);
         while(getchar() != '\n');
@@ -300,7 +307,7 @@ int main() {
 
             fgets(linha, sizeof(linha), stdin);
             linha[strcspn(linha, "\n")] = '\0'; 
-            printf("Entrada recebida: %s\n", linha);
+            printf("\nEntrada recebida: %s\n", linha);
 
    
             char *token = strtok(linha, " "); 
@@ -346,7 +353,7 @@ int main() {
                 DadosSonda *sondamaisprox = EncontrarSondaMaisProxima(&listasondas, latitude, longitude);
                 if (sondamaisprox != NULL) {
                     MoverSonda(sondamaisprox, latitude, longitude);
-                    printf("Sonda %d movida para a posição da rocha em (%f, %f).\n", 
+                    printf("Sonda %d movida para a posicao da rocha em (%f, %f).\n", 
                     sondamaisprox->Identificador, 
                     latitude, 
                     longitude);
@@ -365,7 +372,7 @@ int main() {
                 TCelula *atual = listasondas.pPrimeiro->pProx;
                 while (atual != NULL) {
                     DadosSonda *sonda = &atual->sonda;
-                    printf("%d\n", sonda->Identificador);
+                    printf("\n%d\n", sonda->Identificador);
                     if (lehvaziarocha(&sonda->compartimento)) {
                         printf("compartimento vazio!\n");
                     } else {
@@ -378,7 +385,7 @@ int main() {
 
         }else if (comando == 'E') {
             printf("Executando redistribuicao...\n");
-            RedistribuirRochas(&listasondas);
+            RedistribuirRochasDinamicamente(&listasondas);
             printf("Estado atualizado apos redistribuicao:\n");
             TCelula *atual = listasondas.pPrimeiro->pProx;
             while (atual != NULL){

@@ -32,12 +32,12 @@ void MoverSonda(DadosSonda *sonda, float novaLat, float novaLon) {
 }
 
 void ExibirStatusSonda(DadosSonda *sonda) {
-    printf("ID: %d\n", sonda->Identificador);
-    printf("Latitude: %.2f\n", sonda->Latitude);
-    printf("Longitude: %.2f\n", sonda->Longitude);
+    printf("\nID: %d\n", sonda->Identificador);
+    printf("Latitude: %.6f\n", sonda->Latitude);
+    printf("Longitude: %.6f\n", sonda->Longitude);
     printf("Estado: %s\n", sonda->EstaLigada ? "LIGADA" : "DESLIGADA");
     printf("Capacidade: %.2f kg\n", sonda->Capacidade);
     printf("Velocidade: %.2f\n", sonda->Velocidade);
-    printf("Combustivel: %.2f\n", sonda->Combustivel);
+    printf("Combustivel: %.2f\n\n", sonda->Combustivel);
 }
 
