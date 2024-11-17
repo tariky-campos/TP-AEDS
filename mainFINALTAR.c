@@ -5,22 +5,24 @@
 #include <float.h>
 #include "ListaSondasEspaciais.h"
 
-void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, const char *mineral2) {
-    if (mineral2 == NULL || strcmp(mineral2, "") == 0) { // Caso apenas um mineral seja fornecido
+void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, const char *mineral2, const char *mineral3) {
+    if ((mineral2 == NULL || strcmp(mineral2, "") == 0) && (mineral3 == NULL || strcmp(mineral3, "") == 0)) {
+        // Caso apenas um mineral seja fornecido
         if (strcmp(mineral1, "Aquavitae") == 0) {
             strcpy(rocha->categoria, "Aqua Pura");
         } else if (strcmp(mineral1, "Ferrolita") == 0) {
-            strcpy(rocha->categoria, "Ferro Puro");
+            strcpy(rocha->categoria, "Ferrom");
         } else if (strcmp(mineral1, "Terranita") == 0) {
             strcpy(rocha->categoria, "Terra Pura");
         } else if (strcmp(mineral1, "Solarium") == 0) {
             strcpy(rocha->categoria, "Solaris");
         } else if (strcmp(mineral1, "Calaris") == 0) {
-            strcpy(rocha->categoria, "Calaris Puro");
+            strcpy(rocha->categoria, "Calaris");
         } else {
             strcpy(rocha->categoria, "Sem Categoria");
         }
-    } else { // Caso dois minerais sejam fornecidos
+    } else if (mineral3 == NULL || strcmp(mineral3, "") == 0) {
+        // Caso dois minerais sejam fornecidos
         if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Terranita") == 0) ||
             (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Terranita") == 0)) {
             strcpy(rocha->categoria, "Aquaterra");
@@ -49,9 +51,24 @@ void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, cons
         } else {
             strcpy(rocha->categoria, "Sem Categoria");
         }
+    } else {
+        // Caso três minerais sejam fornecidos
+        int temAquavitae = (strcmp(mineral1, "Aquavitae") == 0 || strcmp(mineral2, "Aquavitae") == 0 || strcmp(mineral3, "Aquavitae") == 0);
+        int temCalaris = (strcmp(mineral1, "Calaris") == 0 || strcmp(mineral2, "Calaris") == 0 || strcmp(mineral3, "Calaris") == 0);
+        int temFerrolita = (strcmp(mineral1, "Ferrolita") == 0 || strcmp(mineral2, "Ferrolita") == 0 || strcmp(mineral3, "Ferrolita") == 0);
+
+        if (temAquavitae && temCalaris && temFerrolita) {
+            strcpy(rocha->categoria, "Aquacalis");
+        } else {
+            strcpy(rocha->categoria, "Sem Categoria");
+        }
     }
-    printf("Mineral 1: %s, Mineral 2: %s\n", mineral1, (mineral2 && strcmp(mineral2, "") != 0) ? mineral2 : "Nenhum");
+
+    printf("Mineral 1: %s, Mineral 2: %s, Mineral 3: %s\n", mineral1,
+           (mineral2 && strcmp(mineral2, "") != 0) ? mineral2 : "Nenhum",
+           (mineral3 && strcmp(mineral3, "") != 0) ? mineral3 : "Nenhum");
 }
+
 float CalcularDistancia(float lat1, float lon1, float lat2, float lon2);
 
 float CalcularDistancia(float lat1, float lon1, float lat2, float lon2) {
@@ -265,16 +282,16 @@ int main() {
         if (comando == 'R') {
             char linha[250];
             float latitude, longitude, peso;
-            char mineral1[50], mineral2[50];
+            char mineral1[50], mineral2[50], mineral3[50];
 
             fgets(linha, sizeof(linha), stdin);
             linha[strcspn(linha, "\n")] = '\0'; // Remove o caractere de nova linha
             printf("Entrada recebida: %s\n", linha);
 
-            // Usa strtok para separar os tokens
+    // Usa strtok para separar os tokens
             char *token = strtok(linha, " "); // O delimitador é o espaço
 
-            // Converte os três primeiros tokens para float
+    // Converte os três primeiros tokens para float
             latitude = atof(token); // Converte o primeiro valor para float
             token = strtok(NULL, " "); // Avança para o próximo token
 
@@ -284,37 +301,49 @@ int main() {
             peso = atof(token); // Converte o terceiro valor para float
             token = strtok(NULL, " "); // Avança para o próximo token
 
-            // O próximo token é o primeiro mineral
-            strcpy(mineral1, token); // Copia o quarto valor para a string1
-            token = strtok(NULL, " "); // Avança para o próximo token
+    // O próximo token é o primeiro mineral
+            if (token != NULL) {
+                strcpy(mineral1, token); // Copia o quarto valor para a string1
+            } else {
+                strcpy(mineral1, ""); // Se não houver, define como string vazia
+            }
 
-            // Se houver um segundo mineral, copie-o
+    // Se houver um segundo mineral, copie-o
+            token = strtok(NULL, " "); // Avança para o próximo token
             if (token != NULL) {
                 strcpy(mineral2, token); // Copia o quinto valor para a string2
-            } else {
-                strcpy(mineral2, ""); // Se não houver, define como string vazia
-            }
+                } else {
+                    strcpy(mineral2, ""); // Se não houver, define como string vazia
+                }
 
-            rochamineral novaRocha;
-            strcpy(novaRocha.categoria, "");
-            novaRocha.peso = peso;
-            novaRocha.localizacao.latituderocha = latitude;
-            novaRocha.localizacao.longituderocha = longitude;
+    // Se houver um terceiro mineral, copie-o
+                token = strtok(NULL, " "); // Avança para o próximo token
+                if (token != NULL) {
+                    strcpy(mineral3, token); // Copia o sexto valor para a string3
+                } else {
+                    strcpy(mineral3, ""); // Se não houver, define como string vazia
+                }
 
-            DadosSonda *sondamaisprox= EncontrarSondaMaisProxima(&listasondas, latitude,longitude);
-            if (sondamaisprox != NULL) {
-                MoverSonda(sondamaisprox, latitude, longitude);
-                printf("Sonda %d movida para a posição da rocha em (%f, %f).\n", 
-                sondamaisprox->Identificador, 
-                latitude, 
-                longitude);
-           
+                rochamineral novaRocha;
+                strcpy(novaRocha.categoria, "");
+                novaRocha.peso = peso;
+                novaRocha.localizacao.latituderocha = latitude;
+                novaRocha.localizacao.longituderocha = longitude;
 
-            
-                DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2);
+                DadosSonda *sondamaisprox = EncontrarSondaMaisProxima(&listasondas, latitude, longitude);
+                if (sondamaisprox != NULL) {
+                    MoverSonda(sondamaisprox, latitude, longitude);
+                    printf("Sonda %d movida para a posição da rocha em (%f, %f).\n", 
+                    sondamaisprox->Identificador, 
+                    latitude, 
+                    longitude);
+
+        // Define a categoria com até 3 minerais
+                DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2, mineral3);
                 AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);
-            }
-        } 
+    }
+}
+
         else if (comando == 'I') {
             if (LehVazia(&listasondas)) {
                 printf("A lista de sondas está vazia.\n");
