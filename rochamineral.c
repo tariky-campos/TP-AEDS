@@ -12,39 +12,68 @@ void inicializarocha(rochamineral *rocha, int idrocha,float peso,char *categoria
     set_localizacao(rocha, localizacao);
 }
 
-char* DefCategoria(rochamineral* rocha){
-    int i;
-    int qtdMinerais = rocha->listamineral.Ultimo - rocha->listamineral.Primeiro;
-    if(qtdMinerais == 0){
-        strcpy(rocha->categoria, "Sem Minerais");
-        return rocha->categoria;
+void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, const char *mineral2, const char *mineral3) {
+    if ((mineral2 == NULL || strcmp(mineral2, "") == 0) && (mineral3 == NULL || strcmp(mineral3, "") == 0)) {
+        // Caso apenas um mineral seja fornecido
+        if (strcmp(mineral1, "Aquavitae") == 0) {
+            strcpy(rocha->categoria, "Aqua Pura");
+        } else if (strcmp(mineral1, "Ferrolita") == 0) {
+            strcpy(rocha->categoria, "Ferrom");
+        } else if (strcmp(mineral1, "Terranita") == 0) {
+            strcpy(rocha->categoria, "Terra Pura");
+        } else if (strcmp(mineral1, "Solarium") == 0) {
+            strcpy(rocha->categoria, "Solaris");
+        } else if (strcmp(mineral1, "Calaris") == 0) {
+            strcpy(rocha->categoria, "Calaris");
+        } else {
+            strcpy(rocha->categoria, "Sem Categoria");
+        }
+    } else if (mineral3 == NULL || strcmp(mineral3, "") == 0) {
+        // Caso dois minerais sejam fornecidos
+        if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Terranita") == 0) ||
+            (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Terranita") == 0)) {
+            strcpy(rocha->categoria, "Aquaterra");
+        } else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+                   (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Aquaferro");
+        } else if ((strcmp(mineral1, "Ferrolita") == 0 && strcmp(mineral2, "Solarium") == 0) ||
+                   (strcmp(mineral2, "Ferrolita") == 0 && strcmp(mineral1, "Solarium") == 0)) {
+            strcpy(rocha->categoria, "Terrasol");
+        } else if ((strcmp(mineral1, "Calaris") == 0 && strcmp(mineral2, "Terranita") == 0) ||
+                   (strcmp(mineral2, "Calaris") == 0 && strcmp(mineral1, "Terranita") == 0)) {
+            strcpy(rocha->categoria, "Terrolis");
+        } else if ((strcmp(mineral1, "Ferrolita") == 0) && (strcmp(mineral2, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Ferrom");
+        } else if ((strcmp(mineral1, "Solarium") == 0) && (strcmp(mineral2, "Solarium") == 0)) {
+            strcpy(rocha->categoria, "Solaris");
+        } else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Calaris") == 0) ||
+                   (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Calaris") == 0)) {
+            strcpy(rocha->categoria, "Calquer");
+        } else if ((strcmp(mineral1, "Solarium") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+                   (strcmp(mineral2, "Solarium") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Solarisfer");
+        } else if ((strcmp(mineral1, "Terranita") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+                   (strcmp(mineral2, "Terranita") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Terralis");
+        } else {
+            strcpy(rocha->categoria, "Sem Categoria");
+        }
+    } else {
+        // Caso três minerais sejam fornecidos
+        int temAquavitae = (strcmp(mineral1, "Aquavitae") == 0 || strcmp(mineral2, "Aquavitae") == 0 || strcmp(mineral3, "Aquavitae") == 0);
+        int temCalaris = (strcmp(mineral1, "Calaris") == 0 || strcmp(mineral2, "Calaris") == 0 || strcmp(mineral3, "Calaris") == 0);
+        int temFerrolita = (strcmp(mineral1, "Ferrolita") == 0 || strcmp(mineral2, "Ferrolita") == 0 || strcmp(mineral3, "Ferrolita") == 0);
+
+        if (temAquavitae && temCalaris && temFerrolita) {
+            strcpy(rocha->categoria, "Aquacalis");
+        } else {
+            strcpy(rocha->categoria, "Sem Categoria");
+        }
     }
 
-    int temFerrolita = 0;
-    int temSolarium = 0;
-    int temAquavitae = 0;
-    int temTerranita = 0;
-    int temCalaris = 0;
-
-    for(i = rocha->listamineral.Primeiro; i < rocha->listamineral.Ultimo; i++){
-       if(strcmp(rocha->listamineral.Item[i].mineral.nome, "Ferrolita") == 0) {temFerrolita = 1;}
-       else if(strcmp(rocha->listamineral.Item[i].mineral.nome, "Solarium") == 0) {temSolarium = 1;}
-       else if(strcmp(rocha->listamineral.Item[i].mineral.nome, "Aquavitae") == 0) {temAquavitae = 1;}
-       else if(strcmp(rocha->listamineral.Item[i].mineral.nome, "Terranita") == 0) {temTerranita = 1;}
-       else if(strcmp(rocha->listamineral.Item[i].mineral.nome, "Calaris") == 0) {temCalaris = 1;}
-    }
-
-    if(temFerrolita && qtdMinerais == 1) {strcpy(rocha->categoria, "Ferrom");}
-    else if(temSolarium && qtdMinerais == 1) {strcpy(rocha->categoria, "Solaris");}
-    else if(temFerrolita && temAquavitae && qtdMinerais == 2) {strcpy(rocha->categoria, "Aquaferro");}
-    else if(temCalaris && temTerranita && qtdMinerais == 2) {strcpy(rocha->categoria, "Terrolis");}
-    else if(temFerrolita && temSolarium && qtdMinerais == 2) {strcpy(rocha->categoria, "Terrasol");}
-    else if(temAquavitae && temTerranita && qtdMinerais == 2) {strcpy(rocha->categoria, "Aquaterra");}
-    else if(temCalaris && temAquavitae && qtdMinerais == 2) {strcpy(rocha->categoria, "Calquer");}
-    else if(temSolarium && temFerrolita && qtdMinerais == 2) {strcpy(rocha->categoria, "Solarisfer");}
-    else if(temTerranita && temFerrolita && qtdMinerais == 2) {strcpy(rocha->categoria, "Terralis");}
-    else if(temAquavitae && temCalaris && temFerrolita && qtdMinerais == 3) {strcpy(rocha->categoria, "Aquacalis");}
-    return rocha->categoria;
+    printf("Mineral 1: %s, Mineral 2: %s, Mineral 3: %s\n", mineral1,
+           (mineral2 && strcmp(mineral2, "") != 0) ? mineral2 : "Nenhum",
+           (mineral3 && strcmp(mineral3, "") != 0) ? mineral3 : "Nenhum");
 }
 
 

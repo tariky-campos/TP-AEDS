@@ -34,6 +34,7 @@ data get_data(rochamineral *rocha);
 localizacao get_localizacao(rochamineral *rocha);
 tlistamineral get_listamineral(rochamineral *rocha);
 void classifica_categoria(rochamineral* rocha, int qtdMinerais, tlistamineral* lista_m);
+void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, const char *mineral2, const char *mineral3);
 
 
 
