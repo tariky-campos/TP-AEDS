@@ -22,9 +22,8 @@ int LehVazia(Tlista *lista);
 int Linsere(Tlista *lista, DadosSonda *pGuardar);
 int Retira(Tlista *lista, DadosSonda *pGuardar);
 void Imprime(Tlista *lista);
-void RedistribuirRochasDinamicamente(Tlista *listasondas);
-void OrdenarRochas(tlistarocha *lista);
-void RemoverPrimeiraRocha(tlistarocha *lista, rochamineral *rocha);
+void RedistribuirRochas(Tlista *listasondas);
+
 void RemoverTodasRochas(tlistarocha *origem, tlistarocha *destino);
 float CalcularDistancia(float lat1, float lon1, float lat2, float lon2);
 void MoverSondasParaOrigem(Tlista *listasondas);

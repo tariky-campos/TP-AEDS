@@ -50,15 +50,16 @@ void Imprime(Tlista *lista) {
         pAux = pAux->pProx;
     }
 }
-void RedistribuirRochasDinamicamente(Tlista *listasondas) {
+void RedistribuirRochas(Tlista *listasondas) {
     if (LehVazia(listasondas)) {
         printf("A lista de sondas está vazia.\n");
         return;
     }
 
     tlistarocha lista_temp;
-    flvaziarocha(&lista_temp);
+    flvaziarocha(&lista_temp);//cria uma lista temporaria
 
+    //percorre todas as sondas, remove suas rochas e armazena elas na lista temporaria
     TCelula *atual = listasondas->pPrimeiro->pProx;
     while (atual != NULL) {
         DadosSonda *sonda = &atual->sonda;
@@ -73,15 +74,16 @@ void RedistribuirRochasDinamicamente(Tlista *listasondas) {
         DadosSonda *sondaMaisApropriada = NULL;
         float menorDistancia = FLT_MAX;
         float menorCarga = FLT_MAX;
+        //percorre todas as sondas para encontrar a mais adequada para a rocha
 
         atual = listasondas->pPrimeiro->pProx;
         while (atual != NULL) {
             DadosSonda *sonda = &atual->sonda;
 
-
+            //calcula o peso atual do compartimento da sonda
             float pesoAtual = PesoTotal(&sonda->compartimento);
             if (pesoAtual + rocha.peso <= sonda->Capacidade) {
-    
+                //verifica se a sonda tem capacidade suficiente para armazenar a rocha
                 float distancia = CalcularDistancia(
                     rocha.localizacao.latituderocha,
                     rocha.localizacao.longituderocha,
@@ -89,7 +91,7 @@ void RedistribuirRochasDinamicamente(Tlista *listasondas) {
                     sonda->Longitude
                 );
 
-             
+                //atualiza a melhor sonda baseada na menor distancia ou na menor carga em caso de empate
                 if (distancia < menorDistancia || 
                    (distancia == menorDistancia && pesoAtual < menorCarga)) {
                     menorDistancia = distancia;
@@ -101,7 +103,7 @@ void RedistribuirRochasDinamicamente(Tlista *listasondas) {
             atual = atual->pProx;
         }
 
-   
+        //verifica se foi encontrada uma sonda apropriada para a rocha e a insere na sonda
         if (sondaMaisApropriada != NULL) {
             linsererocha(&sondaMaisApropriada->compartimento, &rocha);
             MoverSonda(
@@ -122,37 +124,9 @@ void RedistribuirRochasDinamicamente(Tlista *listasondas) {
         atual = atual->pProx;
     }
 
-    printf("Redistribuicao dinamica concluida.\n");
-}
-void OrdenarRochas(tlistarocha *lista) {
-    if (lista->pprimeiro == NULL || lista->pprimeiro->pprox == NULL)
-        return;
-
-    tcelula *i, *j;
-    for (i = lista->pprimeiro->pprox; i != NULL; i = i->pprox) {
-        for (j = i->pprox; j != NULL; j = j->pprox) {
-            if (i->rocha.idrocha > j->rocha.idrocha) { 
-               
-                rochamineral temp = i->rocha;
-                i->rocha = j->rocha;
-                j->rocha = temp;
-            }
-        }
-    }
+    printf("Redistribuicao concluida.\n");
 }
 
-void RemoverPrimeiraRocha(tlistarocha *lista, rochamineral *rocha) {
-    if (lehvaziarocha(lista)) return; 
-
-    tcelula *aux = lista->pprimeiro->pprox; 
-    *rocha = aux->rocha;                           
-
-    lista->pprimeiro->pprox = aux->pprox;        
-    if (aux->pprox == NULL)                       
-        lista->pultimo = lista->pprimeiro;       
-
-    free(aux);                                  
-}
 void RemoverTodasRochas(tlistarocha *origem, tlistarocha *destino) {
     while (!lehvaziarocha(origem)) {              
         rochamineral rocha;
@@ -161,10 +135,10 @@ void RemoverTodasRochas(tlistarocha *origem, tlistarocha *destino) {
     }
 }
 float CalcularDistancia(float lat1, float lon1, float lat2, float lon2) {
-    return sqrt(pow(lat2 - lat1, 2) + pow(lon2 - lon1, 2));
+    return sqrt(pow(lat2 - lat1, 2) + pow(lon2 - lon1, 2));//calcula a distância euclidiana entre dois pontos geográficos
 }
 
-void MoverSondasParaOrigem(Tlista *listasondas) {
+void MoverSondasParaOrigem(Tlista *listasondas) {//move todas as sondas para (0,0) 
     if (LehVazia(listasondas)) {
         printf("A lista de sondas esta vazia.\n");
         return;
@@ -190,22 +164,23 @@ void MoverSondasParaOrigem(Tlista *listasondas) {
     }
 }
 DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float longitude) {
-    if (LehVazia(listasondas)) {
+    if (LehVazia(listasondas)) { //confere  se a lista esta vazia
         printf("A lista de sondas esta vazia.\n");
         return NULL;
     }
-
+    
     TCelula *atual = listasondas->pPrimeiro->pProx; 
+    // cria ariáveis para armazenar a sonda mais próxima e a menor distância
     DadosSonda *sondaMaisProxima = NULL;
-    float menorDistancia = FLT_MAX;
+    float menorDistancia = FLT_MAX; //inicializa com o valor máximo possível
 
    
-    while (atual != NULL) {
-        DadosSonda *sonda = &atual->sonda;
+    while (atual != NULL) {//percorre a lista de sondas
+        DadosSonda *sonda = &atual->sonda;//trata da sonda atual
 
         float distancia = CalcularDistancia(latitude, longitude, sonda->Latitude, sonda->Longitude);
 
-       
+       //confere e atualiza a menor distancia e a sonda mais proxima
         if (distancia < menorDistancia) {
             menorDistancia = distancia;
             sondaMaisProxima = sonda;
@@ -214,7 +189,7 @@ DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float
         atual = atual->pProx;
     }
 
-    return sondaMaisProxima;
+    return sondaMaisProxima; //retorna a sonda mais proxima
 }
 
 void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRocha) {
@@ -230,7 +205,7 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
     while (atual != NULL) {
         DadosSonda *sonda = &atual->sonda;
 
-       
+        //calcula a distancia entre a localização da rocha e a sonda atual.
         float distancia = CalcularDistancia(
             novaRocha->localizacao.latituderocha,
             novaRocha->localizacao.longituderocha,
@@ -238,7 +213,7 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
             sonda->Longitude
         );
 
-    
+        //calcula o peso atual no compartimento da sonda
         float pesoAtual = PesoTotal(&sonda->compartimento);
         if (pesoAtual + novaRocha->peso <= sonda->Capacidade && distancia < menorDistancia) {
             menorDistancia = distancia;
@@ -256,7 +231,7 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
             novaRocha->localizacao.longituderocha
         );
 
-  
+        //insere a rocha no compartimento da sonda.
         linsererocha(&sondaMaisProxima->compartimento, novaRocha);
 
         printf("Rocha adicionada a sonda %d (Peso Atual: %.2f, Capacidade Maxima: %.2f)\n\n", 

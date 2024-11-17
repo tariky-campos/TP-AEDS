@@ -135,7 +135,7 @@ int main()
                 strcpy(novaRocha.categoria, "");
                 novaRocha.peso = peso;
                 novaRocha.localizacao.latituderocha = latitude;
-                novaRocha.localizacao.longituderocha = longitude;
+                novaRocha.localizacao.longituderocha = longitude; //inicializa os dados de uma nova rocha
 
                 DadosSonda *sondamaisprox = EncontrarSondaMaisProxima(&listasondas, latitude, longitude);
                 if (sondamaisprox != NULL)
@@ -181,7 +181,7 @@ int main()
             else if (comando == 'E')
             {
                 printf("Executando redistribuicao...\n");
-                RedistribuirRochasDinamicamente(&listasondas);
+                RedistribuirRochas(&listasondas);
                 printf("Estado atualizado apos redistribuicao:\n");
                 TCelula *atual = listasondas.pPrimeiro->pProx;
                 while (atual != NULL)
@@ -354,7 +354,7 @@ int main()
             else if (comando == 'E')
             {
                 printf("...Executando redistribuicao...\n");
-                RedistribuirRochasDinamicamente(&listasondas); // redistribui as rochas
+                RedistribuirRochas(&listasondas); // redistribui as rochas
                 printf("Estado atualizado apos redistribuicao:\n");
                 TCelula *atual = listasondas.pPrimeiro->pProx;
                 while (atual != NULL)
