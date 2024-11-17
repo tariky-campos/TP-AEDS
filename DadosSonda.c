@@ -41,3 +41,4 @@ void ExibirStatusSonda(DadosSonda *sonda) {
     printf("Combustivel: %.2f\n\n", sonda->Combustivel);
 }
 
+
