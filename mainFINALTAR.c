@@ -183,6 +183,7 @@ int main() {
         printf("Digite o comando (R/I/E): ");
         fflush(stdout);
         scanf(" %c", &comando);
+        while(getchar() != '\n');
 
         if (comando == 'R') {
             char linha[250];
