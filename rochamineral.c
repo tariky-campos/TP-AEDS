@@ -15,16 +15,11 @@ void inicializarocha(rochamineral *rocha, int idrocha,float peso,char *categoria
 void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, const char *mineral2, const char *mineral3) {
     if ((mineral2 == NULL || strcmp(mineral2, "") == 0) && (mineral3 == NULL || strcmp(mineral3, "") == 0)) {
         // Caso apenas um mineral seja fornecido
-        if (strcmp(mineral1, "Aquavitae") == 0) {
-            strcpy(rocha->categoria, "Aqua Pura");
-        } else if (strcmp(mineral1, "Ferrolita") == 0) {
+        
+        if (strcmp(mineral1, "Ferrolita") == 0) {
             strcpy(rocha->categoria, "Ferrom");
-        } else if (strcmp(mineral1, "Terranita") == 0) {
-            strcpy(rocha->categoria, "Terra Pura");
         } else if (strcmp(mineral1, "Solarium") == 0) {
             strcpy(rocha->categoria, "Solaris");
-        } else if (strcmp(mineral1, "Calaris") == 0) {
-            strcpy(rocha->categoria, "Calaris");
         } else {
             strcpy(rocha->categoria, "Sem Categoria");
         }
