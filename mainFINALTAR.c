@@ -27,7 +27,7 @@ void OrdenarRochas(tlistarocha *lista) {
 void AtualizarLocalizacaoSonda(DadosSonda *sonda, float novaLatitude, float novaLongitude) {
     sonda->Latitude = novaLatitude;
     sonda->Longitude = novaLongitude;
-    printf("Sonda %d atualizada para nova localização: (%.6f, %.6f)\n", 
+    printf("Sonda %d atualizada para nova localizacao: (%.6f, %.6f)\n", 
            sonda->Identificador, novaLatitude, novaLongitude);
 }
 
@@ -61,7 +61,7 @@ float CalcularDistancia(float lat1, float lon1, float lat2, float lon2) {
 
 void MoverSondasParaOrigem(Tlista *listasondas) {
     if (LehVazia(listasondas)) {
-        printf("A lista de sondas está vazia.\n");
+        printf("A lista de sondas esta vazia.\n");
         return;
     }
 
@@ -75,10 +75,10 @@ void MoverSondasParaOrigem(Tlista *listasondas) {
             sonda->Latitude = 0.0;
             sonda->Longitude = 0.0;
             sonda->Combustivel -= consumo;
-            printf("Sonda %d movida para a origem (0,0). Combustível restante: %.2f\n", 
+            printf("Sonda %d movida para a origem (0,0). Combustivel restante: %.2f\n", 
                    sonda->Identificador, sonda->Combustivel);
         } else {
-            printf("Sonda %d não possui combustível suficiente para se mover para a origem.\n", 
+            printf("Sonda %d não possui combustivel suficiente para se mover para a origem.\n", 
                    sonda->Identificador);
         }
         atual = atual->pProx;
@@ -86,7 +86,7 @@ void MoverSondasParaOrigem(Tlista *listasondas) {
 }
 DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float longitude) {
     if (LehVazia(listasondas)) {
-        printf("A lista de sondas está vazia.\n");
+        printf("A lista de sondas esta vazia.\n");
         return NULL;
     }
 
@@ -116,7 +116,7 @@ DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float
 
 void RedistribuirRochas(Tlista *listasondas) {
     if (LehVazia(listasondas)) {
-        printf("A lista de sondas está vazia.\n");
+        printf("A lista de sondas esta vazia.\n");
         return;
     }
 
@@ -168,7 +168,7 @@ void RedistribuirRochas(Tlista *listasondas) {
                 rocha.localizacao.longituderocha
             );
         } else {
-            printf("Nenhuma sonda disponível para receber a rocha (peso: %.2f).\n", rocha.peso);
+            printf("Nenhuma sonda disponivel para receber a rocha (peso: %.2f).\n", rocha.peso);
         }
     }
 
@@ -179,7 +179,7 @@ void RedistribuirRochas(Tlista *listasondas) {
         atual = atual->pProx;
     }
 
-    printf("Redistribuição concluída.\n");
+    printf("Redistribucao concluida.\n");
 }
 
 
@@ -190,7 +190,7 @@ float CalcularDistancia(float lat1, float lon1, float lat2, float lon2);
 
 void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRocha) {
     if (LehVazia(listasondas)) {
-        printf("A lista de sondas está vazia.\n");
+        printf("A lista de sondas esta vazia.\n");
         return;
     }
 
@@ -230,13 +230,13 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
   
         linsererocha(&sondaMaisProxima->compartimento, novaRocha);
 
-        printf("Rocha adicionada à sonda %d (Distância: %.2f, Peso Atual: %.2f, Capacidade Máxima: %.2f)\n", 
+        printf("Rocha adicionada a sonda %d (Distancia: %.2f, Peso Atual: %.2f, Capacidade Maxima: %.2f)\n", 
                sondaMaisProxima->Identificador, 
                menorDistancia,
                PesoTotal(&sondaMaisProxima->compartimento),
                sondaMaisProxima->Capacidade);
     } else {
-        printf("Nenhuma sonda disponível ou com capacidade suficiente para adicionar a rocha.\n");
+        printf("Nenhuma sonda disponivel ou com capacidade suficiente para adicionar a rocha.\n");
     }
 }
 
@@ -281,7 +281,7 @@ int main() {
     Imprime(&listasondas);
     printf("Sistema inicializado com %d sondas.\n", n_sondas);
 
-    printf("Digite o número de acoes: ");
+    printf("Digite o numero de acoes: ");
     fflush(stdout);
     int n_acoes;
     scanf("%d", &n_acoes);
@@ -359,7 +359,7 @@ int main() {
 
         else if (comando == 'I') {
             if (LehVazia(&listasondas)) {
-                printf("A lista de sondas está vazia.\n");
+                printf("A lista de sondas esta vazia.\n");
             } else {
                 
                 TCelula *atual = listasondas.pPrimeiro->pProx;
