@@ -6,37 +6,52 @@
 #include "ListaSondasEspaciais.h"
 
 void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, const char *mineral2) {
-    if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Terranita") == 0) ||
-        (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Terranita") == 0)) {
-        strcpy(rocha->categoria, "Aquaterra");
-    } else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
-               (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
-        strcpy(rocha->categoria, "Aquaferro");
-    } else if ((strcmp(mineral1, "Ferrolita") == 0 && strcmp(mineral2, "Solarium") == 0) ||
-               (strcmp(mineral2, "Ferrolita") == 0 && strcmp(mineral1, "Solarium") == 0)) {
-        strcpy(rocha->categoria, "Terrasol");
-    } else if ((strcmp(mineral1, "Calaris") == 0 && strcmp(mineral2, "Terranita") == 0) ||
-               (strcmp(mineral2, "Calaris") == 0 && strcmp(mineral1, "Terranita") == 0)) {
-        strcpy(rocha->categoria, "Terrolis");
-    } else if ((strcmp(mineral1, "Ferrolita") == 0) && (strcmp(mineral2, "Ferrolita") == 0)) {
-        strcpy(rocha->categoria, "Ferrom");
-    } else if ((strcmp(mineral1, "Solarium") == 0) && (strcmp(mineral2, "Solarium") == 0)) {
-        strcpy(rocha->categoria, "Solaris");
-    } else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Calaris") == 0) ||
-               (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Calaris") == 0)) {
-        strcpy(rocha->categoria, "Calquer");
-    } else if ((strcmp(mineral1, "Solarium") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
-               (strcmp(mineral2, "Solarium") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
-        strcpy(rocha->categoria, "Solarisfer");
-    } else if ((strcmp(mineral1, "Terranita") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
-               (strcmp(mineral2, "Terranita") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
-        strcpy(rocha->categoria, "Terralis");
-    } else {
-        strcpy(rocha->categoria, "Sem Categoria"); // Categoria padrão caso não corresponda
+    if (mineral2 == NULL || strcmp(mineral2, "") == 0) { // Caso apenas um mineral seja fornecido
+        if (strcmp(mineral1, "Aquavitae") == 0) {
+            strcpy(rocha->categoria, "Aqua Pura");
+        } else if (strcmp(mineral1, "Ferrolita") == 0) {
+            strcpy(rocha->categoria, "Ferro Puro");
+        } else if (strcmp(mineral1, "Terranita") == 0) {
+            strcpy(rocha->categoria, "Terra Pura");
+        } else if (strcmp(mineral1, "Solarium") == 0) {
+            strcpy(rocha->categoria, "Solaris");
+        } else if (strcmp(mineral1, "Calaris") == 0) {
+            strcpy(rocha->categoria, "Calaris Puro");
+        } else {
+            strcpy(rocha->categoria, "Sem Categoria");
+        }
+    } else { // Caso dois minerais sejam fornecidos
+        if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Terranita") == 0) ||
+            (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Terranita") == 0)) {
+            strcpy(rocha->categoria, "Aquaterra");
+        } else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+                   (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Aquaferro");
+        } else if ((strcmp(mineral1, "Ferrolita") == 0 && strcmp(mineral2, "Solarium") == 0) ||
+                   (strcmp(mineral2, "Ferrolita") == 0 && strcmp(mineral1, "Solarium") == 0)) {
+            strcpy(rocha->categoria, "Terrasol");
+        } else if ((strcmp(mineral1, "Calaris") == 0 && strcmp(mineral2, "Terranita") == 0) ||
+                   (strcmp(mineral2, "Calaris") == 0 && strcmp(mineral1, "Terranita") == 0)) {
+            strcpy(rocha->categoria, "Terrolis");
+        } else if ((strcmp(mineral1, "Ferrolita") == 0) && (strcmp(mineral2, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Ferrom");
+        } else if ((strcmp(mineral1, "Solarium") == 0) && (strcmp(mineral2, "Solarium") == 0)) {
+            strcpy(rocha->categoria, "Solaris");
+        } else if ((strcmp(mineral1, "Aquavitae") == 0 && strcmp(mineral2, "Calaris") == 0) ||
+                   (strcmp(mineral2, "Aquavitae") == 0 && strcmp(mineral1, "Calaris") == 0)) {
+            strcpy(rocha->categoria, "Calquer");
+        } else if ((strcmp(mineral1, "Solarium") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+                   (strcmp(mineral2, "Solarium") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Solarisfer");
+        } else if ((strcmp(mineral1, "Terranita") == 0 && strcmp(mineral2, "Ferrolita") == 0) ||
+                   (strcmp(mineral2, "Terranita") == 0 && strcmp(mineral1, "Ferrolita") == 0)) {
+            strcpy(rocha->categoria, "Terralis");
+        } else {
+            strcpy(rocha->categoria, "Sem Categoria");
+        }
     }
-    printf("Mineral 1: %s, Mineral 2: %s\n", mineral1, mineral2);
+    printf("Mineral 1: %s, Mineral 2: %s\n", mineral1, (mineral2 && strcmp(mineral2, "") != 0) ? mineral2 : "Nenhum");
 }
-
 float CalcularDistancia(float lat1, float lon1, float lat2, float lon2);
 
 float CalcularDistancia(float lat1, float lon1, float lat2, float lon2) {
@@ -67,6 +82,35 @@ void MoverSondasParaOrigem(Tlista *listasondas) {
         atual = atual->pProx;
     }
 }
+DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float longitude) {
+    if (LehVazia(listasondas)) {
+        printf("A lista de sondas está vazia.\n");
+        return NULL;
+    }
+
+    TCelula *atual = listasondas->pPrimeiro->pProx; // Começa no primeiro elemento válido
+    DadosSonda *sondaMaisProxima = NULL;
+    float menorDistancia = FLT_MAX;
+
+    // Iterar sobre as sondas para encontrar a mais próxima
+    while (atual != NULL) {
+        DadosSonda *sonda = &atual->sonda;
+
+        // Calcula a distância entre a sonda e as coordenadas da rocha
+        float distancia = CalcularDistancia(latitude, longitude, sonda->Latitude, sonda->Longitude);
+
+        // Atualiza a menor distância e a sonda correspondente
+        if (distancia < menorDistancia) {
+            menorDistancia = distancia;
+            sondaMaisProxima = sonda;
+        }
+
+        atual = atual->pProx; // Move para o próximo elemento da lista
+    }
+
+    return sondaMaisProxima;
+}
+
 
 // Função para redistribuir o peso das rochas entre as sondas
 void RedistribuirRochas(Tlista *listasondas) {
@@ -104,6 +148,15 @@ void RedistribuirRochas(Tlista *listasondas) {
 float CalcularDistancia(float lat1, float lon1, float lat2, float lon2);
 
 // Função para adicionar a rocha na sonda mais próxima
+
+
+// Função para atualizar a localização da sonda após capturar uma rocha
+void AtualizarLocalizacaoSonda(DadosSonda *sonda, float novaLatitude, float novaLongitude) {
+    sonda->Latitude = novaLatitude;
+    sonda->Longitude = novaLongitude;
+    printf("Sonda %d atualizada para nova localização: (%.6f, %.6f)\n", 
+           sonda->Identificador, novaLatitude, novaLongitude);
+}
 void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRocha) {
     if (LehVazia(listasondas)) {
         printf("A lista de sondas está vazia.\n");
@@ -116,9 +169,18 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
 
     while (atual != NULL) {
         DadosSonda *sonda = &atual->sonda;
-        float distancia = CalcularDistancia(novaRocha->localizacao.latituderocha, novaRocha->localizacao.longituderocha, sonda->Latitude, sonda->Longitude);
-        
-        if (distancia < menorDistancia) {
+
+        // Calcular a distância entre a sonda e a rocha
+        float distancia = CalcularDistancia(
+            novaRocha->localizacao.latituderocha,
+            novaRocha->localizacao.longituderocha,
+            sonda->Latitude,
+            sonda->Longitude
+        );
+
+        // Verificar se a sonda tem capacidade para carregar a rocha
+        float pesoAtual = PesoTotal(&sonda->compartimento);
+        if (pesoAtual + novaRocha->peso <= sonda->Capacidade && distancia < menorDistancia) {
             menorDistancia = distancia;
             sondaMaisProxima = sonda;
         }
@@ -127,12 +189,27 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
     }
 
     if (sondaMaisProxima != NULL) {
+        // Mover a sonda para a posição da rocha
+        MoverSonda(
+            sondaMaisProxima,
+            novaRocha->localizacao.latituderocha,
+            novaRocha->localizacao.longituderocha
+        );
+
+        // Adicionar a rocha ao compartimento da sonda
         linsererocha(&sondaMaisProxima->compartimento, novaRocha);
-        printf("Rocha adicionada à sonda %d (Distância: %.2f)\n", sondaMaisProxima->Identificador, menorDistancia);
+
+        printf("Rocha adicionada à sonda %d (Distância: %.2f, Peso Atual: %.2f, Capacidade Máxima: %.2f)\n", 
+               sondaMaisProxima->Identificador, 
+               menorDistancia,
+               PesoTotal(&sondaMaisProxima->compartimento),
+               sondaMaisProxima->Capacidade);
     } else {
-        printf("Nenhuma sonda disponível para adicionar a rocha.\n");
+        printf("Nenhuma sonda disponível ou com capacidade suficiente para adicionar a rocha.\n");
     }
 }
+
+
 
 int main() {
     Tlista listasondas;
@@ -224,9 +301,19 @@ int main() {
             novaRocha.localizacao.latituderocha = latitude;
             novaRocha.localizacao.longituderocha = longitude;
 
+            DadosSonda *sondamaisprox= EncontrarSondaMaisProxima(&listasondas, latitude,longitude);
+            if (sondamaisprox != NULL) {
+                MoverSonda(sondamaisprox, latitude, longitude);
+                printf("Sonda %d movida para a posição da rocha em (%f, %f).\n", 
+                sondamaisprox->Identificador, 
+                latitude, 
+                longitude);
+           
+
             
-            DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2);
-            AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);
+                DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2);
+                AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);
+            }
         } 
         else if (comando == 'I') {
             if (LehVazia(&listasondas)) {
