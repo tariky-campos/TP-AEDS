@@ -59,7 +59,7 @@ void DefinirCategoriaPorMinerais(rochamineral *rocha, const char *mineral1, cons
             strcpy(rocha->categoria, "Sem Categoria");
         }
     } else {
-        // Caso três minerais sejam fornecidos
+        
         int temAquavitae = (strcmp(mineral1, "Aquavitae") == 0 || strcmp(mineral2, "Aquavitae") == 0 || strcmp(mineral3, "Aquavitae") == 0);
         int temCalaris = (strcmp(mineral1, "Calaris") == 0 || strcmp(mineral2, "Calaris") == 0 || strcmp(mineral3, "Calaris") == 0);
         int temFerrolita = (strcmp(mineral1, "Ferrolita") == 0 || strcmp(mineral2, "Ferrolita") == 0 || strcmp(mineral3, "Ferrolita") == 0);
