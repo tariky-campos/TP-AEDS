@@ -15,7 +15,7 @@ typedef struct {
 }DadosSonda;
 
 
-void InicializarSonda(DadosSonda *sonda, int id, tlistarocha compartimento, float lat,
+void InicializarSonda(DadosSonda *sonda, int id, float lat,
 float lon,float capacidade, float velocidade, float combustivel);
 void LigarSonda(DadosSonda *sonda);
 void DesligarSonda(DadosSonda *sonda);
