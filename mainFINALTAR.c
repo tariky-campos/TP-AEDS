@@ -3,11 +3,15 @@
 #include <string.h>
 #include <math.h>
 #include <float.h>
-#include "ListaSondasEspaciais.h"
+#include "menu.h"
 int main()
 {
 
     int tipo;
+
+    char linha[500];
+    float latitude, longitude, peso;
+    char mineral1[50], mineral2[50], mineral3[50];
     printf("1-Arquivo de teste  2-Terminal\n");
     scanf("%d", &tipo);
     if (tipo == 1)
@@ -23,7 +27,7 @@ int main()
 
         // scanf("%d", &n_sondas);
         FILE *arq;
-        scanf("%s", &nomearq);
+        scanf("%49s",nomearq);
         arq = fopen(nomearq, "r");
         fscanf(arq, "%d", &n_sondas);
         printf("%d", n_sondas);
@@ -81,9 +85,6 @@ int main()
                 int ch;
                 while ((ch = fgetc(arq)) != '\n' && ch != EOF)
                     ;
-                char linha[500];
-                float latitude, longitude, peso;
-                char mineral1[50], mineral2[50], mineral3[50];
 
                 // fscanf(arq,"%f %f %d %s %s %s",&latitude, &longitude, &peso, &mineral1, &mineral2, &mineral3);
                 fgets(linha, sizeof(linha), arq);
@@ -135,7 +136,7 @@ int main()
                 strcpy(novaRocha.categoria, "");
                 novaRocha.peso = peso;
                 novaRocha.localizacao.latituderocha = latitude;
-                novaRocha.localizacao.longituderocha = longitude; //inicializa os dados de uma nova rocha
+                novaRocha.localizacao.longituderocha = longitude; // inicializa os dados de uma nova rocha
 
                 DadosSonda *sondamaisprox = EncontrarSondaMaisProxima(&listasondas, latitude, longitude);
                 if (sondamaisprox != NULL)
@@ -154,49 +155,13 @@ int main()
             else if (comando == 'I')
             {
                 if (LehVazia(&listasondas))
-                {
-                    printf("A lista de sondas esta vazia.\n");
-                }
-                else
-                {
-
-                    TCelula *atual = listasondas.pPrimeiro->pProx;
-                    while (atual != NULL)
-                    {
-                        DadosSonda *sonda = &atual->sonda;
-                        printf("\n%d\n", sonda->Identificador);
-                        if (lehvaziarocha(&sonda->compartimento))
-                        {
-                            printf("compartimento vazio!\n");
-                        }
-                        else
-                        {
-                            limprimerocha(&sonda->compartimento);
-                        }
-                        atual = atual->pProx;
-                    }
-                    printf("\n");
-                }
+                printf("A lista de sondas esta vazia.\n");
+                else OperacaoI(&listasondas);
             }
-            else if (comando == 'E')
-            {
-                printf("Executando redistribuicao...\n");
-                RedistribuirRochas(&listasondas);
-                printf("Estado atualizado apos redistribuicao:\n");
-                TCelula *atual = listasondas.pPrimeiro->pProx;
-                while (atual != NULL)
-                {
-                    DadosSonda *sonda = &atual->sonda;
-                    printf("%d\n", sonda->Identificador);
-                    limprimerocha(&sonda->compartimento);
-                    atual = atual->pProx;
-                }
-                break;
-            }
-            else
-            {
-                printf("Comando desconhecido: %c\n", comando);
-            }
+            else if (comando == 'E') 
+            OperacaoE(&listasondas);
+            
+            else printf("Comando desconhecido: %c\n", comando);
         }
         fclose(arq);
     }
@@ -206,14 +171,14 @@ int main()
         int n_sondas;
         FLvazia(&listasondas); // cria uma lista de sondas vazia
 
-        printf("Numero de sondas: ");
+        printquntdsondas();
         scanf("%d", &n_sondas);
 
         for (int i = 0; i < n_sondas; i++)
         {
             DadosSonda novaSonda;
 
-            printf("Digite os dados da sonda %d (Latitude Longitude Capacidade Velocidade Combustivel): ", i + 1);
+            printsonda(n_sondas);
             scanf("%f %f %f %f %f",
                   &novaSonda.Latitude,
                   &novaSonda.Longitude,
@@ -242,14 +207,14 @@ int main()
 
         printf("Sistema inicializado com %d sondas.\n", n_sondas);
 
-        printf("Digite o numero de acoes: ");
+        printquntdoperacoes();
         int n_acoes;
         scanf("%d", &n_acoes); // recebe o numero de operacoes que o usuario vai fazer
 
         for (int i = 0; i < n_acoes; i++)
         {
             char comando;
-            printf("\nDigite o comando (R/I/E): ");
+            printmenu();
             scanf(" %c", &comando);
             while (getchar() != '\n')
                 ;
@@ -259,6 +224,7 @@ int main()
                 char linha[250];
                 float latitude, longitude, peso;
                 char mineral1[50], mineral2[50], mineral3[50];
+                printRochanova();
 
                 fgets(linha, sizeof(linha), stdin); // le a linha completa que o usuario insere
                 linha[strcspn(linha, "\n")] = '\0'; // remover o caractere da nova linha (\n)
@@ -327,45 +293,14 @@ int main()
             else if (comando == 'I')
             { // imprime os status atual das sondas
                 if (LehVazia(&listasondas))
-                {
-                    printf("A lista de sondas esta vazia.\n");
-                }
+                printf("A lista de sondas esta vazia.\n");
+                
                 else
-                {
-
-                    TCelula *atual = listasondas.pPrimeiro->pProx;
-                    while (atual != NULL)
-                    {
-                        DadosSonda *sonda = &atual->sonda;
-                        printf("\n%d\n", sonda->Identificador);
-                        if (lehvaziarocha(&sonda->compartimento))
-                        {
-                            printf("compartimento vazio!\n");
-                        }
-                        else
-                        {
-                            limprimerocha(&sonda->compartimento);
-                        }
-                        atual = atual->pProx;
-                    }
-                    printf("\n");
-                }
+                 OperacaoI(&listasondas);
             }
             else if (comando == 'E')
-            {
-                printf("...Executando redistribuicao...\n");
-                RedistribuirRochas(&listasondas); // redistribui as rochas
-                printf("Estado atualizado apos redistribuicao:\n");
-                TCelula *atual = listasondas.pPrimeiro->pProx;
-                while (atual != NULL)
-                {
-                    DadosSonda *sonda = &atual->sonda;
-                    printf("%d\n", sonda->Identificador);
-                    limprimerocha(&sonda->compartimento);
-                    atual = atual->pProx;
-                }
-                break;
-            }
+                OperacaoE(&listasondas);
+            
             else
             {
                 printf("Comando desconhecido: %c\n", comando);

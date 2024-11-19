@@ -50,82 +50,6 @@ void Imprime(Tlista *lista) {
         pAux = pAux->pProx;
     }
 }
-void RedistribuirRochas(Tlista *listasondas) {
-    if (LehVazia(listasondas)) {
-        printf("A lista de sondas está vazia.\n");
-        return;
-    }
-
-    tlistarocha lista_temp;
-    flvaziarocha(&lista_temp);//cria uma lista temporaria
-
-    //percorre todas as sondas, remove suas rochas e armazena elas na lista temporaria
-    TCelula *atual = listasondas->pPrimeiro->pProx;
-    while (atual != NULL) {
-        DadosSonda *sonda = &atual->sonda;
-        RemoverTodasRochas(&sonda->compartimento, &lista_temp);
-        atual = atual->pProx;
-    }
-
-    while (!lehvaziarocha(&lista_temp)) {
-        rochamineral rocha;
-        RemoverPrimeiraRocha(&lista_temp, &rocha);
-
-        DadosSonda *sondaMaisApropriada = NULL;
-        float menorDistancia = FLT_MAX;
-        float menorCarga = FLT_MAX;
-        //percorre todas as sondas para encontrar a mais adequada para a rocha
-
-        atual = listasondas->pPrimeiro->pProx;
-        while (atual != NULL) {
-            DadosSonda *sonda = &atual->sonda;
-
-            //calcula o peso atual do compartimento da sonda
-            float pesoAtual = PesoTotal(&sonda->compartimento);
-            if (pesoAtual + rocha.peso <= sonda->Capacidade) {
-                //verifica se a sonda tem capacidade suficiente para armazenar a rocha
-                float distancia = CalcularDistancia(
-                    rocha.localizacao.latituderocha,
-                    rocha.localizacao.longituderocha,
-                    sonda->Latitude,
-                    sonda->Longitude
-                );
-
-                //atualiza a melhor sonda baseada na menor distancia ou na menor carga em caso de empate
-                if (distancia < menorDistancia || 
-                   (distancia == menorDistancia && pesoAtual < menorCarga)) {
-                    menorDistancia = distancia;
-                    menorCarga = pesoAtual;
-                    sondaMaisApropriada = sonda;
-                }
-            }
-
-            atual = atual->pProx;
-        }
-
-        //verifica se foi encontrada uma sonda apropriada para a rocha e a insere na sonda
-        if (sondaMaisApropriada != NULL) {
-            linsererocha(&sondaMaisApropriada->compartimento, &rocha);
-            MoverSonda(
-                sondaMaisApropriada,
-                rocha.localizacao.latituderocha,
-                rocha.localizacao.longituderocha
-            );
-        } else {
-            printf("Nenhuma sonda disponível para receber a rocha (peso: %.2f).\n", rocha.peso);
-        }
-    }
-
-  
-    atual = listasondas->pPrimeiro->pProx;
-    while (atual != NULL) {
-        DadosSonda *sonda = &atual->sonda;
-        OrdenarRochas(&sonda->compartimento);
-        atual = atual->pProx;
-    }
-
-    printf("Redistribuicao concluida.\n");
-}
 
 void RemoverTodasRochas(tlistarocha *origem, tlistarocha *destino) {
     while (!lehvaziarocha(origem)) {              
@@ -192,6 +116,7 @@ DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float
     return sondaMaisProxima; //retorna a sonda mais proxima
 }
 
+
 void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRocha) {
     if (LehVazia(listasondas)) {
         printf("A lista de sondas esta vazia.\n");
@@ -242,4 +167,108 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
         printf("Nenhuma sonda disponivel ou com capacidade suficiente para adicionar a rocha.\n");
     }
 }
+int ContarRochas(tlistarocha *listaRochas) {
+    if (lehvaziarocha(listaRochas)) {
+        return 0; // Se a lista de rochas está vazia, retorna 0
+    }
 
+    int contador = 0;
+    Apontador_c atual = listaRochas->pprimeiro->pprox;
+
+    while (atual != NULL) {
+        contador++;
+        atual = atual->pprox;
+    }
+
+    return contador;
+}
+
+void OperacaoI(Tlista *listasondas) {
+    if (LehVazia(listasondas)) {
+        printf("A lista de sondas esta vazia.\n");
+    } else {
+        TCelula *atual = listasondas->pPrimeiro->pProx;
+        while (atual != NULL) {
+            DadosSonda *sonda = &atual->sonda;
+            printf("\n%d\n", sonda->Identificador);
+            if (lehvaziarocha(&sonda->compartimento)) {
+                printf("compartimento vazio!\n");
+            } else {
+                limprimerocha(&sonda->compartimento);
+            }
+            atual = atual->pProx;
+        }
+        printf("\n");
+    }
+}
+void OperacaoE(Tlista *listasondas) {
+    if (LehVazia(listasondas)) {
+        printf("A lista de sondas está vazia.\n");
+        return;
+    }
+
+    printf("Executando redistribuicao equilibrada de rochas...\n");
+
+    int houveRedistribuicao = 1; // Variável para acompanhar se redistribuições ocorrem
+
+    while (houveRedistribuicao) {
+        houveRedistribuicao = 0; // Reseta a flag
+
+        TCelula *atualCheia = listasondas->pPrimeiro->pProx;
+
+        // Encontra uma sonda cheia (com 2 ou mais rochas)
+        while (atualCheia != NULL) {
+            DadosSonda *sondaCheia = &atualCheia->sonda;
+            int totalRochasCheia = ContarRochas(&sondaCheia->compartimento);
+
+            if (totalRochasCheia >= 2) {
+                // Encontra uma sonda livre (com 0 rochas)
+                TCelula *atualLivre = listasondas->pPrimeiro->pProx;
+                while (atualLivre != NULL) {
+                    DadosSonda *sondaLivre = &atualLivre->sonda;
+                    int totalRochasLivre = ContarRochas(&sondaLivre->compartimento);
+
+                    if (totalRochasLivre == 0) {
+                        // Remove uma rocha da sonda cheia
+                        rochamineral rochaTransferida;
+                        RemoverPrimeiraRocha(&sondaCheia->compartimento, &rochaTransferida);
+
+                        // Insere a rocha na sonda livre
+                        linsererocha(&sondaLivre->compartimento, &rochaTransferida);
+                        MoverSonda(
+                            sondaLivre,
+                            rochaTransferida.localizacao.latituderocha,
+                            rochaTransferida.localizacao.longituderocha
+                        );
+
+                        printf("Rocha transferida da sonda %d para a sonda %d.\n",
+                               sondaCheia->Identificador,
+                               sondaLivre->Identificador);
+
+                        houveRedistribuicao = 1; // Indica que uma redistribuição ocorreu
+                        break;
+                    }
+                    atualLivre = atualLivre->pProx;
+                }
+            }
+
+            // Se houve redistribuição, reinicia o loop para reavaliar
+            if (houveRedistribuicao) {
+                break;
+            }
+
+            atualCheia = atualCheia->pProx;
+        }
+    }
+
+    // Exibe o estado final das sondas
+    printf("Redistribuicao equilibrada concluida. Estado atualizado das sondas:\n");
+    TCelula *atual = listasondas->pPrimeiro->pProx;
+    while (atual != NULL) {
+        DadosSonda *sonda = &atual->sonda;
+        int totalRochas = ContarRochas(&sonda->compartimento);
+        printf("Sonda %d: %d rochas\n", sonda->Identificador, totalRochas);
+        limprimerocha(&sonda->compartimento); // Exibe as rochas
+        atual = atual->pProx;
+    }
+}
