@@ -30,6 +30,7 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
 DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float longitude);
 void OperacaoI(Tlista *listasondas);
 void OperacaoE(Tlista *listasondas);
+int ContarRochas(tlistarocha *listaRochas);
 
 
 #endif

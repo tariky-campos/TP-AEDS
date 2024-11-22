@@ -8,11 +8,11 @@ void FLvazia(Tlista *lista) {
     lista->pPrimeiro->pProx = NULL;
     lista->pUltimo = lista->pPrimeiro;
     lista->numSondas = 0;  
-}
+}// faz lista fazia
 
 int LehVazia(Tlista *lista) {
     return (lista->pPrimeiro == lista->pUltimo);
-}
+}// confere se a lista esta vazia
 
 int Linsere(Tlista *lista, DadosSonda *sonda) {
     lista->pUltimo->pProx = (Apontador)malloc(sizeof(TCelula));
@@ -94,7 +94,7 @@ DadosSonda* EncontrarSondaMaisProxima(Tlista *listasondas, float latitude, float
     }
     
     TCelula *atual = listasondas->pPrimeiro->pProx; 
-    // cria ariáveis para armazenar a sonda mais próxima e a menor distância
+    // cria variáveis para armazenar a sonda mais próxima e a menor distância
     DadosSonda *sondaMaisProxima = NULL;
     float menorDistancia = FLT_MAX; //inicializa com o valor máximo possível
 
@@ -154,7 +154,7 @@ void AdicionarRochaNaSondaMaisProxima(Tlista *listasondas, rochamineral *novaRoc
             sondaMaisProxima,
             novaRocha->localizacao.latituderocha,
             novaRocha->localizacao.longituderocha
-        );
+        );//move a sonda para a localizacao da rocha
 
         //insere a rocha no compartimento da sonda.
         linsererocha(&sondaMaisProxima->compartimento, novaRocha);
@@ -181,20 +181,20 @@ int ContarRochas(tlistarocha *listaRochas) {
     }
 
     return contador;
-}
+}//conta a quantidade de rochas
 
 void OperacaoI(Tlista *listasondas) {
     if (LehVazia(listasondas)) {
         printf("A lista de sondas esta vazia.\n");
     } else {
         TCelula *atual = listasondas->pPrimeiro->pProx;
-        while (atual != NULL) {
+        while (atual != NULL) {//percorre as sondas
             DadosSonda *sonda = &atual->sonda;
             printf("\n%d\n", sonda->Identificador);
             if (lehvaziarocha(&sonda->compartimento)) {
                 printf("compartimento vazio!\n");
             } else {
-                limprimerocha(&sonda->compartimento);
+                limprimerocha(&sonda->compartimento);//imprime o compartimento da sonda
             }
             atual = atual->pProx;
         }

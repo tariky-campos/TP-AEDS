@@ -8,11 +8,11 @@ void flvaziarocha(tlistarocha* plistarocha) {
     plistarocha->pultimo = plistarocha->pprimeiro;
     plistarocha->pprimeiro->pprox = NULL;
     plistarocha->contador = 0;
-} 
+} // faz lista fazia
 
 int lehvaziarocha(tlistarocha* plistarocha) {
     return (plistarocha->pprimeiro == plistarocha->pultimo);
-} 
+} // confere se a lista esta fazia
 void linsererocha(tlistarocha *plistarocha, rochamineral *procha) {
   
     Apontador_c novaCelula = (Apontador_c)malloc(sizeof(tcelula));
@@ -31,7 +31,7 @@ void linsererocha(tlistarocha *plistarocha, rochamineral *procha) {
     plistarocha->pultimo = novaCelula;
 
     plistarocha->contador++;
-}
+}// insere a rocha na lista
 
 void limprimerocha(tlistarocha* plistarocha){
     Apontador_c paux;
@@ -40,7 +40,7 @@ void limprimerocha(tlistarocha* plistarocha){
         printf("%s %.2f\n",paux->rocha.categoria, paux->rocha.peso);
         paux=paux->pprox;
     }
-}
+}//imprime a rocha
 
 float PesoTotal(tlistarocha* compartimento) {
     float peso = 0.0;
@@ -51,7 +51,7 @@ float PesoTotal(tlistarocha* compartimento) {
         atual = atual->pprox;
     }
     return peso;
-}
+}//calcula o peso compartimento
 
 void OrdenarRochas(tlistarocha *lista) {
     if (lista->pprimeiro == NULL || lista->pprimeiro->pprox == NULL)
@@ -68,7 +68,7 @@ void OrdenarRochas(tlistarocha *lista) {
             }
         }
     }
-}
+}//ordena rocha em ordem decrescente
 
 void RemoverPrimeiraRocha(tlistarocha *lista, rochamineral *rocha) {
     if (lehvaziarocha(lista)) return; 
@@ -81,4 +81,4 @@ void RemoverPrimeiraRocha(tlistarocha *lista, rochamineral *rocha) {
         lista->pultimo = lista->pprimeiro;       
 
     free(aux);                                  
-}
+}//remove rocha da lista

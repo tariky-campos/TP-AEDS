@@ -14,21 +14,20 @@ int main()
     char mineral1[50], mineral2[50], mineral3[50];
     printf("1-Arquivo de teste  2-Terminal\n");
     scanf("%d", &tipo);
-    if (tipo == 1)
+    if (tipo == 1)//executa pelo arquivo de teste
     {
         Tlista listasondas;
         int n_sondas;
-        FLvazia(&listasondas);
+        FLvazia(&listasondas); // cria uma lista de sondas vazia
 
         printf("Insira o nome do arquivo de teste: ");
         fflush(stdout);
 
         char nomearq[50];
 
-        // scanf("%d", &n_sondas);
-        FILE *arq;
+        FILE *arq; // declara um ponteiro para manipular um arquivo
         scanf("%49s",nomearq);
-        arq = fopen(nomearq, "r");
+        arq = fopen(nomearq, "r");// abre o arquivo no modo de leitura
         fscanf(arq, "%d", &n_sondas);
         printf("%d", n_sondas);
 
@@ -36,21 +35,20 @@ int main()
         {
             DadosSonda novaSonda;
 
-            // printf("Digite os dados da sonda %d (Latitude Longitude Capacidade Velocidade Combustivel): ", i + 1);
             fflush(stdout);
             fscanf(arq, "%f %f %f %f %f",
                    &novaSonda.Latitude,
                    &novaSonda.Longitude,
                    &novaSonda.Capacidade,
                    &novaSonda.Velocidade,
-                   &novaSonda.Combustivel);
+                   &novaSonda.Combustivel);// recebe todos os dados das sondas
 
             InicializarSonda(&novaSonda, i + 1,
                              novaSonda.Latitude,
                              novaSonda.Longitude,
                              novaSonda.Capacidade,
                              novaSonda.Velocidade,
-                             novaSonda.Combustivel);
+                             novaSonda.Combustivel);// inicializa as sondas
 
             if (Linsere(&listasondas, &novaSonda))
             {
@@ -59,14 +57,13 @@ int main()
             else
             {
                 printf("Falha ao inserir a sonda %d.\n", novaSonda.Identificador);
-            }
+            }// insere as sondas no lista de sondas
             LigarSonda(&novaSonda);
             ExibirStatusSonda(&novaSonda);
         }
 
         printf("Sistema inicializado com %d sondas.\n", n_sondas);
 
-        // printf("Digite o numero de acoes: ");
 
         fflush(stdout);
         int n_acoes;
@@ -75,27 +72,24 @@ int main()
         for (int i = 0; i < n_acoes; i++)
         {
             char comando;
-            // printf("\nDigite o comando (R/I/E): ");
             fflush(stdout);
             fscanf(arq, " %c", &comando);
-            // while(getchar() != '\n');
 
             if (comando == 'R')
             {
                 int ch;
-                while ((ch = fgetc(arq)) != '\n' && ch != EOF)
-                    ;
-
-                // fscanf(arq,"%f %f %d %s %s %s",&latitude, &longitude, &peso, &mineral1, &mineral2, &mineral3);
-                fgets(linha, sizeof(linha), arq);
+                while ((ch = fgetc(arq)) != '\n' && ch != EOF);
+                // le os caracteres linha atual ate encontrar uma nova linha (\n)
+                
+                fgets(linha, sizeof(linha), arq);// le até a linha ate encontrar um \n.
                 linha[strcspn(linha, "\n")] = '\0';
-
+                // remover o caractere da nova linha (\n)
                 printf("\nEntrada recebida: %s\n", linha);
 
-                char *token = strtok(linha, " ");
+                char *token = strtok(linha, " ");// divide a linha em tokens delimitados por um espaco " "
 
-                latitude = atof(token);
-                token = strtok(NULL, " ");
+                latitude = atof(token);// converte o token para um float e armazena na variavel latitude
+                token = strtok(NULL, " ");// procura o proximo token na string usando o delimitador espaco " "
 
                 longitude = atof(token);
                 token = strtok(NULL, " ");
@@ -104,12 +98,12 @@ int main()
                 token = strtok(NULL, " ");
 
                 if (token != NULL)
-                {
-                    strcpy(mineral1, token);
+                {// verifica se o token contem um valor,  retorna NULL quando não encontra mais tokens na string
+                    strcpy(mineral1, token);// copia o conteudo do token para a variavel mineral1
                 }
                 else
                 {
-                    strcpy(mineral1, "");
+                    strcpy(mineral1, "");// se nao tiver token faz com que a mineral1 fique fazia ""
                 }
 
                 token = strtok(NULL, " ");
@@ -133,22 +127,22 @@ int main()
                 }
 
                 rochamineral novaRocha;
-                strcpy(novaRocha.categoria, "");
+                strcpy(novaRocha.categoria, "");// inicializa o campo categoria da rocha com uma string vazia.
                 novaRocha.peso = peso;
                 novaRocha.localizacao.latituderocha = latitude;
                 novaRocha.localizacao.longituderocha = longitude; // inicializa os dados de uma nova rocha
 
                 DadosSonda *sondamaisprox = EncontrarSondaMaisProxima(&listasondas, latitude, longitude);
                 if (sondamaisprox != NULL)
-                {
-                    MoverSonda(sondamaisprox, latitude, longitude);
+                {// confere se foi encontrada uma sonda mais próxima da rocha
+                    MoverSonda(sondamaisprox, latitude, longitude);// move a sonda para a posicao da rocha
                     printf("Sonda %d movida para a posicao da rocha em (%f, %f).\n",
                            sondamaisprox->Identificador,
                            latitude,
                            longitude);
 
-                    DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2, mineral3);
-                    AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);
+                    DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2, mineral3);// recebe om minerais e retorna a categoria
+                    AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);//adiciona a rocha na sonda mais proxima
                 }
             }
 
@@ -156,16 +150,16 @@ int main()
             {
                 if (LehVazia(&listasondas))
                 printf("A lista de sondas esta vazia.\n");
-                else OperacaoI(&listasondas);
+                else OperacaoI(&listasondas);// imprime os status atual das sondas
             }
             else if (comando == 'E') 
             OperacaoE(&listasondas);
-            
+            // redistribui as rochas entre as sondas para que fiquem com peso o mais semelhante possivel
             else printf("Comando desconhecido: %c\n", comando);
         }
-        fclose(arq);
+        fclose(arq);//fecha o arquivo
     }
-    else
+    else// executa pelo terminal
     {
         Tlista listasondas;
         int n_sondas;
@@ -216,8 +210,7 @@ int main()
             char comando;
             printmenu();
             scanf(" %c", &comando);
-            while (getchar() != '\n')
-                ;
+            while (getchar() != '\n');// limpa o buffer do teclado
 
             if (comando == 'R')
             {
@@ -271,14 +264,14 @@ int main()
                 }
 
                 rochamineral novaRocha;
-                strcpy(novaRocha.categoria, "");
+                strcpy(novaRocha.categoria, "");// inicializa o campo categoria da rocha com uma string vazia.
                 novaRocha.peso = peso;
                 novaRocha.localizacao.latituderocha = latitude;
                 novaRocha.localizacao.longituderocha = longitude; // inicializa os dados de uma nova rocha
 
                 DadosSonda *sondamaisprox = EncontrarSondaMaisProxima(&listasondas, latitude, longitude);
                 if (sondamaisprox != NULL)
-                {                                                   // confere se foi encontrada uma sonda mais próxima da rocha
+                {// confere se foi encontrada uma sonda mais próxima da rocha
                     MoverSonda(sondamaisprox, latitude, longitude); // move a sonda para a posicao da rocha
                     printf("Sonda %d movida para a posicao da rocha em (%f, %f).\n",
                            sondamaisprox->Identificador,
@@ -286,21 +279,21 @@ int main()
                            longitude);
 
                     DefinirCategoriaPorMinerais(&novaRocha, mineral1, mineral2, mineral3); // recebe om minerais e retorna a categoria
-                    AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);
+                    AdicionarRochaNaSondaMaisProxima(&listasondas, &novaRocha);// adiciona a rocha na sonda mais proxima
                 }
             }
 
-            else if (comando == 'I')
-            { // imprime os status atual das sondas
+            else if (comando == 'I') 
+            { 
                 if (LehVazia(&listasondas))
                 printf("A lista de sondas esta vazia.\n");
                 
                 else
-                 OperacaoI(&listasondas);
+                 OperacaoI(&listasondas);// imprime os status atual das sondas
             }
             else if (comando == 'E')
                 OperacaoE(&listasondas);
-            
+                // redistribui as rochas entre as sondas para que fiquem com peso o mais semelhante possivel
             else
             {
                 printf("Comando desconhecido: %c\n", comando);
