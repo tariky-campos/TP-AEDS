@@ -16,6 +16,8 @@ int main() {
     DadosSonda sondai; // Estrutura que representa uma sonda
 
     // Solicita ao usuário o método de entrada de dados (1 - Terminal, 2 - Arquivo)
+    printf("\n==============================================================================\n");
+    printf("Ola, somos a equipe de desenvolvimento que fara o sistema de controle de sondas e catalogacao de rochas minerais.\nMembros do grupo: Tariky, Erich e Bernado.\nPrimeiro insira a opcao de entrada.\n");
     while (Escolha != 1 && Escolha != 2) {
         printf("Arquivo de entrada 1-Terminal, 2-Arquivo: \n");
         scanf("%d", &Escolha);
@@ -26,9 +28,9 @@ int main() {
         FLVazia_S(&ListaSonda); // Inicializa a lista de sondas como vazia
 
         // Solicita o número de sondas e seus dados
-        printf("Digite o numero de sondas: ");
+        printf("Agora insira o numero de sondas: ");
         scanf("%d", &N_Sondas);
-        printf("Digite os dados das sondas: (latitude, longitude, capacidade maxima, velocidade e combustivel)\n");
+        printf("Insira os dados das sondas: Latitude, longitude, capacidade maxima, velocidade e combustivel\n");
         for (int i = 0; i < N_Sondas; i++) {
             scanf("%lf %lf %f %f %f", &lat_i, &long_i, &c_i, &v_i, &nc_i);
             InicializaSonda(&sondai, (i + 1), lat_i, long_i, c_i, "Sim"); // Inicializa uma nova sonda
@@ -36,11 +38,11 @@ int main() {
         }
 
         int N_op; // Número de operações
-        printf("Digite o numero de operacoes: ");
+        printf("Insira o numero de operacoes: ");
         scanf("%d", &N_op);
         for (int i = 0; i < N_op; i++) {
             char operacao;
-            printf("Digite a operacao: ");
+            printf("Digite a operacao R: Coleta de uma nova rocha. I: Imprime o status da sonda. E: Redistribuir rochas e voltar para a Terra.\n");
             scanf(" %c", &operacao);
 
             // Processa a operação escolhida
@@ -90,7 +92,7 @@ int main() {
     }
     // Entrada de dados via arquivo
     else if (Escolha == 2) {
-        printf("Nome do arquivo de entrada: ");
+        printf("Insira o nome do arquivo de entrada: ");
         char nomearq[33];
 
         FILE *arq;
