@@ -16,8 +16,10 @@ int main() {
     DadosSonda sondai; // Estrutura que representa uma sonda
 
     // Solicita ao usuário o método de entrada de dados (1 - Terminal, 2 - Arquivo)
-    printf("\n==============================================================================\n");
-    printf("Ola, somos a equipe de desenvolvimento que fara o sistema de controle de sondas e catalogacao de rochas minerais.\nMembros do grupo: Tariky, Erich e Bernado.\nPrimeiro insira a opcao de entrada.\n");
+    printf("\n===================================================================================================================================\n");
+    printf("Ola, somos a equipe de desenvolvimento que fara o sistema de controle de sondas e catalogacao de rochas minerais.\nMembros do grupo: Tariky, Erich e Bernado.\n");
+    printf("===================================================================================================================================\n\n");
+    printf("Primeiro insira a opcao de entrada.\n");
     while (Escolha != 1 && Escolha != 2) {
         printf("Arquivo de entrada 1-Terminal, 2-Arquivo: \n");
         scanf("%d", &Escolha);
