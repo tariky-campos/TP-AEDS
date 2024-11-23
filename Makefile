@@ -1,20 +1,25 @@
-CC = gcc
-CFLAGS = -Wall -g
-SOURCES = DadosSonda.c ListaSondasEspaciais.c compartimento.c listamineral.c mainFINALTAR.c mineral.c rochamineral.c menu.c
-OBJFILES = $(SOURCES:.c=.o)
-EXEC = app
+# Variáveis
+CC = gcc                   # Compilador
+CFLAGS = -Wall -Wextra     # Flags do compilador
+SRCS = $(wildcard *.c)     # Todos os arquivos .c no diretório atual
+OBJS = $(SRCS:.c=.o)       # Converte .c para .o
+EXEC = main                # Nome do executável final
 
+# Regra principal (executar tudo)
 all: $(EXEC)
 
-$(EXEC): $(OBJFILES)
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJFILES) -lm
+# Regra para compilar o executável
+$(EXEC): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
 
+# Regra para compilar arquivos .c em .o
 %.o: %.c
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $< -o $@
 
+# Limpeza dos arquivos gerados
 clean:
-ifeq ($(OS),Windows_NT)
-	del /Q $(OBJFILES) $(EXEC).exe
-else
-	rm -f $(OBJFILES) $(EXEC)
-endif
+	rm -f $(OBJS) $(EXEC)
+
+# Limpeza total
+clean_all: clean
+	rm -f *~
