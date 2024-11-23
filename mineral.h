@@ -3,7 +3,8 @@
 
 typedef struct
 {
-    char nome[75], cor[75];
+    char nome[75];
+    char cor[75];
     double reatividade, dureza;
 } Mineral;
 
@@ -20,7 +21,7 @@ double getReatividade(Mineral *mineral);
 
 void setNome(Mineral *mineral, char *nome);
 void setCor(Mineral *mineral, char *cor);
-void setReatividade(Mineral *mineral, double reativ);
+void setReatividade(Mineral *mineral, double reatividade);
 void setDureza(Mineral *mineral, double dureza);
 
 #endif

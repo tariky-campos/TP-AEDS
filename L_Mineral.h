@@ -7,14 +7,14 @@ typedef int Apontador_L;
 
 typedef struct
 {
-    Mineral ListaM[MaxTam];
+    Mineral ListaMINERAIS[MaxTam];
     Apontador_L pPrimeiro, pUltimo;
 } L_Minerais;
 
-void FLVazia_L(L_Minerais *LMinerais);
-int LEhVazia_L(L_Minerais *LMinerais);
-int LInsere_L(L_Minerais *LMinerais, Mineral x);
-int LRetira_L(L_Minerais *LMinerais, char *nome, Mineral *pX);
-void LImprime_L(L_Minerais *LMinerais);
+void FLVazia_L(L_Minerais *ListaMi);
+int LEhVazia_L(L_Minerais *ListaMi);
+int LInsere_L(L_Minerais *ListaMi, Mineral x);
+int LRetira_L(L_Minerais *ListaMi, char *nome, Mineral *pX);
+void LImprime_L(L_Minerais *ListaMi);
 
 #endif

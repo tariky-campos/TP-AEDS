@@ -31,23 +31,23 @@ char *DefCategoria(rochamineral *rocha)
 
     for (i = rocha->L_Mineral.pPrimeiro; i < rocha->L_Mineral.pUltimo; i++)
     {
-        if (strcmp(rocha->L_Mineral.ListaM[i].nome, "Ferrolita") == 0)
+        if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Ferrolita") == 0)
         {
             temFerrolita = 1;
         }
-        else if (strcmp(rocha->L_Mineral.ListaM[i].nome, "Solarium") == 0)
+        else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Solarium") == 0)
         {
             temSolarium = 1;
         }
-        else if (strcmp(rocha->L_Mineral.ListaM[i].nome, "Aquavitae") == 0)
+        else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Aquavitae") == 0)
         {
             temAquavitae = 1;
         }
-        else if (strcmp(rocha->L_Mineral.ListaM[i].nome, "Terranita") == 0)
+        else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Terranita") == 0)
         {
             temTerranita = 1;
         }
-        else if (strcmp(rocha->L_Mineral.ListaM[i].nome, "Calaris") == 0)
+        else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Calaris") == 0)
         {
             temCalaris = 1;
         }

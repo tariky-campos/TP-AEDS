@@ -160,7 +160,7 @@ rochamineral *copiaRocha(rochamineral *rocha) {
 
     // Copia cada mineral da lista original para a nova rocha
     for (int i = rocha->L_Mineral.pPrimeiro; i < rocha->L_Mineral.pUltimo; i++) {
-        LInsere_L(&copiaRocha->L_Mineral, rocha->L_Mineral.ListaM[i]);
+        LInsere_L(&copiaRocha->L_Mineral, rocha->L_Mineral.ListaMINERAIS[i]);
     }
 
     return copiaRocha; // Retorna a nova cópia
@@ -307,7 +307,7 @@ void OperacaoE(L_Sondas *ListaS) {
 
     // Move todas as sondas para a origem
     MoveOrigem(ListaS);
-    printf("\nRochas redistribuídas com sucesso!!\n");
+    printf("\nRochas redistribuidas com sucesso!!\n");
 }
 void OperacaoI(L_Sondas *ListaSonda) {
     Apontador_S pAux = ListaSonda->pPrimeiro->pProx;
