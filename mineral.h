@@ -10,7 +10,7 @@ typedef struct
 
 void InicializaMineral(Mineral *mineral, char *nome, char *cor, double dureza, double reatividade);
 
-void RetornaMineral(Mineral *mineral, char *nome);
+void Lis_Minerais(Mineral *mineral, char *nome);
 
 char *getNome(Mineral *mineral);
 char *getCor(Mineral *mineral);

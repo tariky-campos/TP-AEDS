@@ -10,7 +10,7 @@ void InicializaMineral(Mineral *mineral, char *nome, char *cor, double dureza, d
     setDureza(mineral, reatividade);
     setReatividade(mineral, dureza);
 }
-void RetornaMineral(Mineral *mineral, char *nome){
+void Lis_Minerais(Mineral *mineral, char *nome){
     if (strcmp(nome, "Ferrolita") == 0)
     {
         strcpy(mineral->nome, "Ferrolita");

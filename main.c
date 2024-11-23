@@ -64,7 +64,7 @@ int main() {
 
                     // Adiciona os minerais à lista da rocha
                     while (buffer != NULL) {
-                        RetornaMineral(&minel, buffer);
+                        Lis_Minerais(&minel, buffer);
                         LInsere_L(&rocha.L_Mineral, minel);
                         buffer = strtok(NULL, delim);
                     }
@@ -72,7 +72,7 @@ int main() {
                     int cont = 0;
 
                     // Inicializa e insere a rocha na lista
-                    InicializaRocha(&rocha, ++cont, p_r, DefCategoria(&rocha), "", lat_r, long_r);
+                    InicializaRocha(&rocha, ++cont, p_r, Categoria(&rocha), "", lat_r, long_r);
                     Insere_S(&ListaSonda, &rocha);
 
                     break;
@@ -141,7 +141,7 @@ int main() {
                     while (buffer != NULL) {
                         Mineral mineral;
                         buffer[strcspn(buffer, "\n")] = '\0';
-                        RetornaMineral(&mineral, buffer);
+                        Lis_Minerais(&mineral, buffer);
                         LInsere_L(&rocha.L_Mineral, mineral);
                         buffer = strtok(NULL, " ");
                     }
@@ -149,7 +149,7 @@ int main() {
                     int cont = 0;
 
                     // Inicializa e insere a rocha na lista
-                    InicializaRocha(&rocha, ++cont, p_r, DefCategoria(&rocha), "", lat_r, long_r);
+                    InicializaRocha(&rocha, ++cont, p_r, Categoria(&rocha), "", lat_r, long_r);
                     Insere_S(&ListaSonda, &rocha);
 
                     break;

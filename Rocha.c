@@ -12,7 +12,7 @@ void InicializaRocha(rochamineral *rocha, int id, float peso, char *categoria, c
     setLocalizacao(rocha, latitude, longitude);
 }
 
-char *DefCategoria(rochamineral *rocha)
+char *Categoria(rochamineral *rocha)
 {
     int i;
     int qtdMinerais = rocha->L_Mineral.pUltimo;
