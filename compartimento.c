@@ -3,6 +3,7 @@
 #include <string.h>
 #include "Compartimento.h"
 
+<<<<<<< HEAD
 void FLVazia_R(L_Compart *pLista)
 {
     pLista->pPrimeiro = (Apontador_R)malloc(sizeof(Celula_R));
@@ -97,6 +98,23 @@ void LTroca_R(L_Compart *pLista)
     // Verifica se a lista está vazia ou tem apenas um elemento. Se sim, não faz nada.
     if (LEhVazia_R(pLista) || pLista->pPrimeiro->pProx == NULL)
     {
+=======
+void flvaziarocha(tlistarocha* plistarocha) {
+    plistarocha->pprimeiro = (Apontador_c)malloc(sizeof(tcelula));
+    plistarocha->pultimo = plistarocha->pprimeiro;
+    plistarocha->pprimeiro->pprox = NULL;
+    plistarocha->contador = 0;
+} // faz lista fazia
+
+int lehvaziarocha(tlistarocha* plistarocha) {
+    return (plistarocha->pprimeiro == plistarocha->pultimo);
+} // confere se a lista esta fazia
+void linsererocha(tlistarocha *plistarocha, rochamineral *procha) {
+  
+    Apontador_c novaCelula = (Apontador_c)malloc(sizeof(tcelula));
+    if (novaCelula == NULL) {
+        printf("Erro: Falha ao alocar memória para nova rocha.\n");
+>>>>>>> efca30ad209a78f56b444e4f2500c2576c8f6b39
         return;
     }
 
@@ -107,6 +125,7 @@ void LTroca_R(L_Compart *pLista)
     // Variável para armazenar o peso da rocha mais pesada
     float maiorPeso = 0;
 
+<<<<<<< HEAD
     // Loop para percorrer a lista e encontrar a rocha mais pesada
     while (pAux != NULL)
     {
@@ -122,6 +141,37 @@ void LTroca_R(L_Compart *pLista)
     // Se não encontrou nenhuma rocha mais pesada, retorna
     if (maisPesada == NULL)
     {
+=======
+    plistarocha->pultimo->pprox = novaCelula;
+    novaCelula->pprox = NULL;
+    plistarocha->pultimo = novaCelula;
+
+    plistarocha->contador++;
+}// insere a rocha na lista
+
+void limprimerocha(tlistarocha* plistarocha){
+    Apontador_c paux;
+    paux=plistarocha->pprimeiro->pprox;
+    while(paux!=NULL){
+        printf("%s %.2f\n",paux->rocha.categoria, paux->rocha.peso);
+        paux=paux->pprox;
+    }
+}//imprime a rocha
+
+float PesoTotal(tlistarocha* compartimento) {
+    float peso = 0.0;
+    tcelula* atual = compartimento->pprimeiro->pprox; 
+
+    while (atual != NULL) {
+        peso += atual->rocha.peso;
+        atual = atual->pprox;
+    }
+    return peso;
+}//calcula o peso compartimento
+
+void OrdenarRochas(tlistarocha *lista) {
+    if (lista->pprimeiro == NULL || lista->pprimeiro->pprox == NULL)
+>>>>>>> efca30ad209a78f56b444e4f2500c2576c8f6b39
         return;
     }
 
@@ -187,4 +237,21 @@ void LTroca_R(L_Compart *pLista)
         // Libera a memória alocada para a rocha mais leve
         free(maisLeve);
     }
+<<<<<<< HEAD
 }
+=======
+}//ordena rocha em ordem decrescente
+
+void RemoverPrimeiraRocha(tlistarocha *lista, rochamineral *rocha) {
+    if (lehvaziarocha(lista)) return; 
+
+    tcelula *aux = lista->pprimeiro->pprox; 
+    *rocha = aux->rocha;                           
+
+    lista->pprimeiro->pprox = aux->pprox;        
+    if (aux->pprox == NULL)                       
+        lista->pultimo = lista->pprimeiro;       
+
+    free(aux);                                  
+}//remove rocha da lista
+>>>>>>> efca30ad209a78f56b444e4f2500c2576c8f6b39
