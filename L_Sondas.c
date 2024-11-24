@@ -64,8 +64,8 @@ void Imprime_S(L_Sondas *L_Sondas) {
 }
 
 // Calcula a distância euclidiana para encontrar a sonda mais próxima de uma rocha
-DadosSonda *CalcularEuclidiana(L_Sondas *ListaS, double lat_r, double long_r, rochamineral *rocha) {
-    Apontador_S pAux = ListaS->pPrimeiro->pProx;
+DadosSonda *CalcularEuclidiana(L_Sondas *pLista_S, double lat_r, double long_r, rochamineral *rocha) {
+    Apontador_S pAux = pLista_S->pPrimeiro->pProx;
     DadosSonda *primeiraSonda = NULL, *segundaSonda = NULL;
     double menorDist = INFINITY, segundaMenorDist = INFINITY;
     double lat_i, long_i, distSonda;
@@ -96,8 +96,8 @@ DadosSonda *CalcularEuclidiana(L_Sondas *ListaS, double lat_r, double long_r, ro
 }
 
 // Insere uma rocha em uma sonda próxima
-void Insere_S(L_Sondas *ListaS, rochamineral *rocha) {
-    DadosSonda *sondaTemp = CalcularEuclidiana(ListaS, rocha->latitude, rocha->longitude, rocha);
+void Insere_S(L_Sondas *pLista_S, rochamineral *rocha) {
+    DadosSonda *sondaTemp = CalcularEuclidiana(pLista_S, rocha->latitude, rocha->longitude, rocha);
 
     if (sondaTemp == NULL) {
         printf("Nao ha sonda perto!\n");
@@ -135,9 +135,9 @@ void Insere_S(L_Sondas *ListaS, rochamineral *rocha) {
 }
 
 // Função para mover todas as sondas para a posição de origem (0,0)
-void MoveOrigem(L_Sondas *ListaS) {
+void MoveOrigem(L_Sondas *pLista_S) {
     Apontador_S pAux = NULL; // Ponteiro auxiliar para percorrer a lista
-    pAux = ListaS->pPrimeiro; // Começa na primeira sonda da lista
+    pAux = pLista_S->pPrimeiro; // Começa na primeira sonda da lista
     while (pAux != NULL) {
         pAux->sonda.latitude = 0.0;  // Define a latitude como 0
         pAux->sonda.longitude = 0.0; // Define a longitude como 0
@@ -167,9 +167,9 @@ rochamineral *copiaRocha(rochamineral *rocha) {
 }
 
 // Função para extrair todas as rochas de uma lista de sondas e colocá-las em um array
-rochamineral *extraiRochas(L_Sondas *ListaS, int *numRochas) {
+rochamineral *extraiRochas(L_Sondas *pLista_S, int *numRochas) {
     *numRochas = 0; // Inicializa o contador de rochas
-    Apontador_S pAuxSonda = ListaS->pPrimeiro->pProx; // Ponteiro para percorrer as sondas
+    Apontador_S pAuxSonda = pLista_S->pPrimeiro->pProx; // Ponteiro para percorrer as sondas
 
     // Conta o número total de rochas em todas as sondas
     while (pAuxSonda != NULL) {
@@ -193,7 +193,7 @@ rochamineral *extraiRochas(L_Sondas *ListaS, int *numRochas) {
     }
 
     int indiceRocha = 0; // Índice do array de rochas
-    pAuxSonda = ListaS->pPrimeiro->pProx; // Reinicia o ponteiro para sondas
+    pAuxSonda = pLista_S->pPrimeiro->pProx; // Reinicia o ponteiro para sondas
 
     // Percorre novamente as sondas para extrair as rochas
     while (pAuxSonda != NULL) {
@@ -224,7 +224,7 @@ int comparaRochas(const void *a, const void *b) {
 }
 
 // Função para redistribuir as rochas entre as sondas
-void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
+void distribuirRochas(L_Sondas *pLista_S, rochamineral *rochas, int numRochas) {
     if (rochas == NULL || numRochas == 0) {
         return; // Retorna se não há rochas para distribuir
     }
@@ -233,7 +233,7 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
     qsort(rochas, numRochas, sizeof(rochamineral), comparaRochas);
 
     int numSondas = 0; // Contador de sondas
-    Apontador_S pAux = ListaS->pPrimeiro->pProx;
+    Apontador_S pAux = pLista_S->pPrimeiro->pProx;
 
     // Conta o número de sondas
     while (pAux != NULL) {
@@ -242,8 +242,8 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
     }
 
     // Aloca memória para rastrear o peso atual de cada sonda
-    float *pesosSondas = (float *)calloc(numSondas, sizeof(float));
-    if (pesosSondas == NULL) { // Verifica a alocação
+    float *PesoSondass = (float *)calloc(numSondas, sizeof(float));
+    if (PesoSondass == NULL) { // Verifica a alocação
         perror("Erro ao alocar memória para pesos das sondas");
         return;
     }
@@ -254,17 +254,17 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
 
         // Procura a sonda com menor peso que possa receber a rocha
         for (int j = 0; j < numSondas; j++) {
-            pAux = ListaS->pPrimeiro->pProx;
+            pAux = pLista_S->pPrimeiro->pProx;
             float menorPeso = -1;
             int indiceMenorPeso = -1;
             
             for (int k = 0; k < numSondas; k++) {
             // Verifica se a sonda atual possui o menor peso acumulado até agora 
             // e se tem capacidade suficiente para suportar o peso da rocha.
-                if ((indiceMenorPeso == -1 || pesosSondas[k] < menorPeso) &&
-                    pAux->sonda.capacidade >= pesosSondas[k] + rochas[i].peso) {
+                if ((indiceMenorPeso == -1 || PesoSondass[k] < menorPeso) &&
+                    pAux->sonda.capacidade >= PesoSondass[k] + rochas[i].peso) {
                     indiceMenorPeso = k;
-                    menorPeso = pesosSondas[k];
+                    menorPeso = PesoSondass[k];
                     // Atualiza o índice da sonda selecionada e o menor peso acumulado
                 }
                 pAux = pAux->pProx;
@@ -273,7 +273,7 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
             if (indiceMenorPeso != -1) {
                 // Verifica se foi encontrada uma sonda válida para alocar a rocha.
                 sondaEscolhida = indiceMenorPeso;
-                pAux = ListaS->pPrimeiro->pProx;
+                pAux = pLista_S->pPrimeiro->pProx;
                 // Reinicializa o ponteiro auxiliar para percorrer novamente a lista.
                 for (int k = 0; k < sondaEscolhida; k++) {
                     pAux = pAux->pProx;
@@ -282,7 +282,7 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
                 if (!LInsere_R(&pAux->sonda.Compar_Rocha, &rochas[i])) {
                     printf("Erro ao inserir rocha na lista\n");
                 }
-                pesosSondas[sondaEscolhida] += rochas[i].peso;
+                PesoSondass[sondaEscolhida] += rochas[i].peso;
                 // Atualiza o peso acumulado da sonda escolhida, adicionando o peso da nova rocha.
                 break; // Sai após inserir a rocha
             }
@@ -294,34 +294,43 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
         }
     }
 
-    free(pesosSondas); // Libera memória dos pesos
+    free(PesoSondass); // Libera memória dos pesos
 }
 
 // Função principal para redistribuir rochas e mover sondas para a origem
-void OperacaoE(L_Sondas *ListaS) {
+void OperacaoE(L_Sondas *pLista_S) {
     int numRochas = 0;
     // Extrai as rochas de todas as sondas
-    rochamineral *rochas = extraiRochas(ListaS, &numRochas);
+    rochamineral *rochas = extraiRochas(pLista_S, &numRochas);
 
     if (rochas != NULL) {
         // Redistribui as rochas entre as sondas
-        distribuirRochas(ListaS, rochas, numRochas);
+        distribuirRochas(pLista_S, rochas, numRochas);
         free(rochas); // Libera a memória do array de rochas
     } else {
         printf("Nenhuma rocha para redistribuir.\n");
     }
 
     // Move todas as sondas para a origem
-    MoveOrigem(ListaS);
+    MoveOrigem(pLista_S);
     printf("\nRochas redistribuidas com sucesso!!\n");
+    printf("\n");
+    Apontador_S pAux = pLista_S->pPrimeiro->pProx;
+    pAux = pLista_S->pPrimeiro->pProx;
+    while (pAux != NULL) {
+        printf("Peso da Sonda %d: %.2f\n", pAux->sonda.idSonda, PesoSonda(&pAux->sonda));
+        pAux = pAux->pProx;
+    }
 }
-void OperacaoI(L_Sondas *ListaSonda) {
-    Apontador_S pAux = ListaSonda->pPrimeiro->pProx;
+void OperacaoI(L_Sondas *pLista_Sonda) {
+    Apontador_S pAux = pLista_Sonda->pPrimeiro->pProx;
 
     while (pAux != NULL)
     {
         DadosSonda *pSonda = &pAux->sonda;
-        printf("%d\n", pSonda->idSonda);
+ 
+        
+        printf("\nSonda: %d\n", pSonda->idSonda);
 
         if (LEhVazia_R(&pSonda->Compar_Rocha))
         {
@@ -338,6 +347,7 @@ void OperacaoI(L_Sondas *ListaSonda) {
                 printf("%s %.2f\n", rAux->rocha.categoria, rAux->rocha.peso);
                 rAux = rAux->pProx;
             }
+            
         }
         pAux = pAux->pProx;
     }
