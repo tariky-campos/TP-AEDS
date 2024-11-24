@@ -4,6 +4,7 @@
 #include "prints.h"
 #include <math.h>
 #define Maxtam 255
+#define miner 50
 
 // Função principal
 int main() {
@@ -51,7 +52,7 @@ int main() {
                 case 'R': { // Adicionar rochas a partir das coordenadas e minerais
                     double lat_r, long_r;
                     float p_r;
-                    char minerais_str[100];
+                    char minerais_str[miner];
 
                     // Recebe os dados da rocha
                     printDadosRoch();
@@ -94,7 +95,7 @@ int main() {
     // Entrada de dados via arquivo
     else if (Escolha == 2) {
         printNomearq();
-        char nomearq[33];
+        char nomearq[miner];
 
         FILE *arq;
         scanf("%49s", nomearq);
