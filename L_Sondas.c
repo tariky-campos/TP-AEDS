@@ -259,17 +259,22 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
             int indiceMenorPeso = -1;
             
             for (int k = 0; k < numSondas; k++) {
+            // Verifica se a sonda atual possui o menor peso acumulado até agora 
+            // e se tem capacidade suficiente para suportar o peso da rocha.
                 if ((indiceMenorPeso == -1 || pesosSondas[k] < menorPeso) &&
                     pAux->sonda.capacidade >= pesosSondas[k] + rochas[i].peso) {
                     indiceMenorPeso = k;
                     menorPeso = pesosSondas[k];
+                    // Atualiza o índice da sonda selecionada e o menor peso acumulado
                 }
                 pAux = pAux->pProx;
             }
 
             if (indiceMenorPeso != -1) {
+                // Verifica se foi encontrada uma sonda válida para alocar a rocha.
                 sondaEscolhida = indiceMenorPeso;
                 pAux = ListaS->pPrimeiro->pProx;
+                // Reinicializa o ponteiro auxiliar para percorrer novamente a lista.
                 for (int k = 0; k < sondaEscolhida; k++) {
                     pAux = pAux->pProx;
                 }
@@ -278,6 +283,7 @@ void distribuirRochas(L_Sondas *ListaS, rochamineral *rochas, int numRochas) {
                     printf("Erro ao inserir rocha na lista\n");
                 }
                 pesosSondas[sondaEscolhida] += rochas[i].peso;
+                // Atualiza o peso acumulado da sonda escolhida, adicionando o peso da nova rocha.
                 break; // Sai após inserir a rocha
             }
         }
