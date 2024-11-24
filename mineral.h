@@ -1,10 +1,10 @@
 #ifndef MINERAL_H
 #define MINERAL_H
-
+#define MAXTAMMI 50
 typedef struct
 {
-    char nome[75];
-    char cor[75];
+    char nome[MAXTAMMI];
+    char cor[MAXTAMMI];
     double reatividade, dureza;
 } Mineral;
 

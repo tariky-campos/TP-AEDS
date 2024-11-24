@@ -1,6 +1,7 @@
 #ifndef DADOSSONDA_H
 #define DADOSSONDA_H
 #include "Compartimento.h"
+#define button 3
 
 typedef struct
 {
@@ -8,7 +9,7 @@ typedef struct
     double latitude, longitude;
     L_Compart Compar_Rocha;
     float capacidade;
-    char EstaLigada[3];
+    char EstaLigada[button];
     
 } DadosSonda;
 

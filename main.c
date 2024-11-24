@@ -3,13 +3,14 @@
 #include <string.h>
 #include "prints.h"
 #include <math.h>
+#define Maxtam 255
 
 // Função principal
 int main() {
     int N_Sondas, Escolha = 0; // Número de sondas e escolha do método de entrada
     double lat_i, long_i; // Coordenadas iniciais da sonda
     float c_i, v_i, nc_i; // Capacidade, velocidade, e combustível inicial das sondas
-    char linha[255]; // Buffer para leitura de strings
+    char linha[Maxtam]; // Buffer para leitura de strings
     L_Sondas ListaSonda; // Lista de sondas
     rochamineral rocha; // Estrutura que representa uma rocha mineral
     Mineral minel; // Estrutura que representa um mineral

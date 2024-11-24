@@ -1,13 +1,14 @@
 #ifndef ROCHAMINERAL_H
 #define ROCHAMINERAL_H
 #include "L_Mineral.h"
+#define MAXTAMR 50
 
 typedef struct
 {
     int id;
     float peso;
-    char categoria[40];
-    char dataColeta[20];
+    char categoria[MAXTAMR];
+    char dataColeta[MAXTAMR];
     double latitude;
     double longitude;
     L_Minerais L_Mineral;

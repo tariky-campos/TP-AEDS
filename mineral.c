@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Mineral.h"
+#define zero 0
 
 void InicializaMineral(Mineral *mineral, char *nome, char *cor, double dureza, double reatividade)
 {
@@ -11,35 +12,35 @@ void InicializaMineral(Mineral *mineral, char *nome, char *cor, double dureza, d
     setReatividade(mineral, dureza);
 }
 void Lis_Minerais(Mineral *mineral, char *nome){
-    if (strcmp(nome, "Ferrolita") == 0)
+    if (strcmp(nome, "Ferrolita") == zero)
     {
         strcpy(mineral->nome, "Ferrolita");
         strcpy(mineral->cor, "Acinzentado");
         mineral->dureza = 0.5;
         mineral->reatividade = 0.7;
     }
-    else if (strcmp(nome, "Solarium") == 0)
+    else if (strcmp(nome, "Solarium") == zero)
     {
         strcpy(mineral->nome, "Solarium");
         strcpy(mineral->cor, "Amarelo");
         mineral->dureza = 0.9;
         mineral->reatividade = 0.2;
     }
-    else if (strcmp(nome, "Aquavitae") == 0)
+    else if (strcmp(nome, "Aquavitae") == zero)
     {
         strcpy(mineral->nome, "Aquavitae");
         strcpy(mineral->cor, "Azulado");
         mineral->dureza = 0.5;
         mineral->reatividade = 0.8;
     }
-    else if (strcmp(nome, "Terranita") == 0)
+    else if (strcmp(nome, "Terranita") == zero)
     {
         strcpy(mineral->nome, "Terranita");
         strcpy(mineral->cor, "Marrom");
         mineral->dureza = 0.7;
         mineral->reatividade = 0.6;
     }
-    else if (strcmp(nome, "Calaris") == 0)
+    else if (strcmp(nome, "Calaris") == zero)
     {
         strcpy(mineral->nome, "Calaris");
         strcpy(mineral->cor, "Vermelho");
