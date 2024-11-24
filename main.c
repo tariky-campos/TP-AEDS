@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "L_Sondas.h"
+#include "prints.h"
 #include <math.h>
 
 // Função principal
@@ -16,35 +16,33 @@ int main() {
     DadosSonda sondai; // Estrutura que representa uma sonda
 
     // Solicita ao usuário o método de entrada de dados (1 - Terminal, 2 - Arquivo)
-    printf("\n===================================================================================================================================\n");
-    printf("Ola, somos a equipe de desenvolvimento que fara o sistema de controle de sondas e catalogacao de rochas minerais.\nMembros do grupo: Tariky, Erich e Bernado.\n");
-    printf("===================================================================================================================================\n\n");
-    printf("Primeiro insira a opcao de entrada.\n");
+    printInicio();
     while (Escolha != 1 && Escolha != 2) {
-        printf("Arquivo de entrada 1-Terminal, 2-Arquivo: \n");
+        printEntrada();
         scanf("%d", &Escolha);
     }
-
     // Entrada de dados via terminal
     if (Escolha == 1) {
         FLVazia_S(&ListaSonda); // Inicializa a lista de sondas como vazia
 
         // Solicita o número de sondas e seus dados
-        printf("Agora insira o numero de sondas: ");
+        printNumSondas();
         scanf("%d", &N_Sondas);
-        printf("Insira os dados das sondas: Latitude, longitude, capacidade maxima, velocidade e combustivel\n");
+
+        printDadosSonda();
         for (int i = 0; i < N_Sondas; i++) {
             scanf("%lf %lf %f %f %f", &lat_i, &long_i, &c_i, &v_i, &nc_i);
             InicializaSonda(&sondai, (i + 1), lat_i, long_i, c_i, "Sim"); // Inicializa uma nova sonda
             LInsere_S(&ListaSonda, &sondai); // Insere a sonda na lista
         }
+        printSucesDados();
 
         int N_op; // Número de operações
-        printf("Insira o numero de operacoes: ");
+        printNumOper();
         scanf("%d", &N_op);
         for (int i = 0; i < N_op; i++) {
             char operacao;
-            printf("Digite a operacao R: Coleta de uma nova rocha. I: Imprime o status da sonda. E: Redistribuir rochas e voltar para a Terra.\n");
+            printOper();
             scanf(" %c", &operacao);
 
             // Processa a operação escolhida
@@ -55,7 +53,7 @@ int main() {
                     char minerais_str[100];
 
                     // Recebe os dados da rocha
-                    printf("\nDigite a latitude, longitude, peso e os minerais:\n");
+                    printDadosRoch();
                     scanf("%lf %lf %f", &lat_r, &long_r, &p_r);
                     getchar(); // Remove o caractere de nova linha do buffer
                     fgets(minerais_str, sizeof(minerais_str), stdin);
@@ -94,11 +92,11 @@ int main() {
     }
     // Entrada de dados via arquivo
     else if (Escolha == 2) {
-        printf("Insira o nome do arquivo de entrada: ");
+        printNomearq();
         char nomearq[33];
 
         FILE *arq;
-        scanf("%32s", nomearq);
+        scanf("%49s", nomearq);
         arq = fopen(nomearq, "r"); // Abre o arquivo em modo leitura
 
         // Lê o número de sondas

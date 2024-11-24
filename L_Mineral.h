@@ -1,13 +1,13 @@
 #ifndef LISTAMINERAIS_H
 #define LISTAMINERAIS_H
-#define MaxTam 1000
+#define MAXTAM 1000
 #include "Mineral.h"
 
 typedef int Apontador_L;
 
 typedef struct
 {
-    Mineral ListaMINERAIS[MaxTam];
+    Mineral ListaMINERAIS[MAXTAM];
     Apontador_L pPrimeiro, pUltimo;
 } L_Minerais;
 

@@ -10,17 +10,7 @@ void FLVazia_R(L_Compart *pLista)
     pLista->pPrimeiro->pProx = NULL;
 }
 
-int LTamanho_R(L_Compart *pLista)
-{
-    int cont = 0;
-    Apontador_R pAux = pLista->pPrimeiro->pProx;
-    while (pAux != NULL)
-    {
-        cont += 1;
-        pAux = pAux->pProx;
-    }
-    return cont;
-}
+
 
 int LEhVazia_R(L_Compart *pLista)
 {
@@ -90,6 +80,17 @@ int LRetira_R(L_Compart *pLista, rochamineral *pRocha)
         pAtual = pAtual->pProx;
     }
     return 0;
+}
+int LTamanho_R(L_Compart *pLista)
+{
+    int cont = 0;
+    Apontador_R pAux = pLista->pPrimeiro->pProx;
+    while (pAux != NULL)
+    {
+        cont += 1;
+        pAux = pAux->pProx;
+    }
+    return cont;
 }
 
 void LTroca_R(L_Compart *pLista)

@@ -16,10 +16,10 @@ typedef struct
 } L_Compart;
 
 void FLVazia_R(L_Compart *pLista);
-int LTamanho_R(L_Compart *pLista);
 int LEhVazia_R(L_Compart *pLista);
 void LImprime_R(L_Compart *pLista);
 void LTroca_R(L_Compart *pLista);
+int LTamanho_R(L_Compart *pLista);
 int LInsere_R(L_Compart *pLista, rochamineral *pRocha);
 int LRetira_R(L_Compart *pLista, rochamineral *pRocha);
 #endif

@@ -3,38 +3,38 @@
 #include <string.h>
 #include "L_Mineral.h"
 
-void FLVazia_L(L_Minerais *LMinerais)
+void FLVazia_L(L_Minerais *ListaMi)
 {
-    LMinerais->pPrimeiro = 0;
-    LMinerais->pUltimo = LMinerais->pPrimeiro;
+    ListaMi->pPrimeiro = 0;
+    ListaMi->pUltimo = ListaMi->pPrimeiro;
 }
 
-int LEhVazia_L(L_Minerais *LMinerais)
+int LEhVazia_L(L_Minerais *ListaMi)
 {
-    return (LMinerais->pUltimo == LMinerais->pPrimeiro);
+    return (ListaMi->pUltimo == ListaMi->pPrimeiro);
 }
 
-int LInsere_L(L_Minerais *LMinerais, Mineral x)
+int LInsere_L(L_Minerais *ListaMi, Mineral x)
 {
-    if (LMinerais->pUltimo == MaxTam)
+    if (ListaMi->pUltimo == MAXTAM)
         return 0; // Lista cheia
-    LMinerais->ListaMINERAIS[LMinerais->pUltimo++] = x;
+    ListaMi->ListaMINERAIS[ListaMi->pUltimo++] = x;
     return 1;
 }
 
-int LRetira_L(L_Minerais *LMinerais, char *nome, Mineral *pX)
+int LRetira_L(L_Minerais *ListaMi, char *nome, Mineral *pX)
 {
     int i, cont;
-    for (i = 0; i < LMinerais->pUltimo; i++)
+    for (i = 0; i < ListaMi->pUltimo; i++)
     {
-        if (strcmp(LMinerais->ListaMINERAIS[i].nome, nome) == 0)
+        if (strcmp(ListaMi->ListaMINERAIS[i].nome, nome) == 0)
         {
-            *pX = LMinerais->ListaMINERAIS[i];
-            LMinerais->pUltimo--;
+            *pX = ListaMi->ListaMINERAIS[i];
+            ListaMi->pUltimo--;
 
-            for (cont = i + 1; cont <= LMinerais->pUltimo; cont++)
+            for (cont = i + 1; cont <= ListaMi->pUltimo; cont++)
             {
-                LMinerais->ListaMINERAIS[cont - 1] = LMinerais->ListaMINERAIS[cont];
+                ListaMi->ListaMINERAIS[cont - 1] = ListaMi->ListaMINERAIS[cont];
             }
             return 1;
         }
