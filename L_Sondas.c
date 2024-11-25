@@ -315,12 +315,7 @@ void OperacaoE(L_Sondas *pLista_S) {
     MoveOrigem(pLista_S);
     printf("\nRochas redistribuidas com sucesso!!\n");
     printf("\n");
-    Apontador_S pAux = pLista_S->pPrimeiro->pProx;
-    pAux = pLista_S->pPrimeiro->pProx;
-    while (pAux != NULL) {
-        printf("Peso da Sonda %d: %.2f\n", pAux->sonda.idSonda, PesoSonda(&pAux->sonda));
-        pAux = pAux->pProx;
-    }
+
 }
 void OperacaoI(L_Sondas *pLista_Sonda) {
     Apontador_S pAux = pLista_Sonda->pPrimeiro->pProx;
