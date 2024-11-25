@@ -13,7 +13,7 @@ typedef struct
 
 void FLVazia_L(L_Minerais *ListaMi);
 int LEhVazia_L(L_Minerais *ListaMi);
-int LInsere_L(L_Minerais *ListaMi, Mineral x);
+int LInsere_L(L_Minerais *ListaMi, Mineral item);
 int LRetira_L(L_Minerais *ListaMi, char *nome, Mineral *pX);
 void LImprime_L(L_Minerais *ListaMi);
 

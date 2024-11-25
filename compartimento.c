@@ -127,8 +127,8 @@ void LTroca_R(L_Compart *pLista)
     }
 
     // Armazena a categoria da rocha mais pesada
-    char categoriaMaisPesada[40];
-    strcpy(categoriaMaisPesada, maisPesada->rocha.categoria);
+    char catMaisPesada[40];
+    strcpy(catMaisPesada, maisPesada->rocha.categoria);
 
     // Inicializa as variáveis para a rocha mais leve
     Apontador_R maisLeve = NULL;
@@ -141,7 +141,7 @@ void LTroca_R(L_Compart *pLista)
     while (pAux != NULL)
     {
         // Verifica se a rocha tem a mesma categoria da rocha mais pesada
-        if (strcmp(pAux->rocha.categoria, categoriaMaisPesada) == 0)
+        if (strcmp(pAux->rocha.categoria, catMaisPesada) == 0)
         {
             // Se for a primeira rocha ou a rocha atual for mais leve que a mais leve anterior
             if (menorPeso == -1 || pAux->rocha.peso < menorPeso)

@@ -14,11 +14,11 @@ int LEhVazia_L(L_Minerais *ListaMi)
     return (ListaMi->pUltimo == ListaMi->pPrimeiro);
 }
 
-int LInsere_L(L_Minerais *ListaMi, Mineral x)
+int LInsere_L(L_Minerais *ListaMi, Mineral item)
 {
     if (ListaMi->pUltimo == MAXTAM)
         return 0; // Lista cheia
-    ListaMi->ListaMINERAIS[ListaMi->pUltimo++] = x;
+    ListaMi->ListaMINERAIS[ListaMi->pUltimo++] = item;
     return 1;
 }
 
