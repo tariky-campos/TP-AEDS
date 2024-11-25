@@ -7,93 +7,86 @@
 #define dois 2
 #define tres 3
 
-void InicializaRocha(rochamineral *rocha, int id, float peso, char *categoria, char *dataColeta, double latitude, double longitude)
+void InicializaRocha(rochamineral *rocha, int id, float peso, char *categoria, char *data, double latitude, double longitude)
 {
     setIdentificador(rocha, id);
     setPeso(rocha, peso);
     setCategoria(rocha, categoria);
-    setDataColeta(rocha, dataColeta);
+    setData(rocha, data);
     setLocalizacao(rocha, latitude, longitude);
 }
 
 char *Categoria(rochamineral *rocha)
 {
-    int i;
-    int qtdMinerais = rocha->L_Mineral.pUltimo;
-
-    if (qtdMinerais == zero)
+    int NumMine = rocha->L_Mineral.pUltimo;
+    if (NumMine == zero)
     {
         strcpy(rocha->categoria, "Sem Minerais");
         return rocha->categoria;
     }
+    int ferrolita = zero, solarium = zero, aquavitae = zero, terranita = zero, calaris = zero;
 
-    int temFerrolita = zero;
-    int temSolarium = zero;
-    int temAquavitae = zero;
-    int temTerranita = zero;
-    int temCalaris = zero;
-
-    for (i = rocha->L_Mineral.pPrimeiro; i < rocha->L_Mineral.pUltimo; i++)
+    for (int i = rocha->L_Mineral.pPrimeiro; i < rocha->L_Mineral.pUltimo; i++)
     {
         if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Ferrolita") == zero)
         {
-            temFerrolita = um;
+            ferrolita = um;
         }
         else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Solarium") == zero)
         {
-            temSolarium = um;
+            solarium = um;
         }
         else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Aquavitae") == zero)
         {
-            temAquavitae = um;
+            aquavitae = um;
         }
         else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Terranita") == zero)
         {
-            temTerranita = um;
+            terranita = um;
         }
         else if (strcmp(rocha->L_Mineral.ListaMINERAIS[i].nome, "Calaris") == zero)
         {
-            temCalaris = um;
+            calaris = um;
         }
     }
 
-    if (temFerrolita && qtdMinerais == um)
+    if (ferrolita && NumMine == um)
     {
         strcpy(rocha->categoria, "Ferrom");
     }
-    else if (temSolarium && qtdMinerais == um)
+    else if (solarium && NumMine == um)
     {
         strcpy(rocha->categoria, "Solaris");
     }
-    else if (temFerrolita && temAquavitae && qtdMinerais == dois)
+    else if (ferrolita && aquavitae && NumMine == dois)
     {
         strcpy(rocha->categoria, "Aquaferro");
     }
-    else if (temTerranita && temCalaris && qtdMinerais == dois)
+    else if (terranita && calaris && NumMine == dois)
     {
         strcpy(rocha->categoria, "Terrolis");
     }
-    else if (temTerranita && temSolarium && qtdMinerais == dois)
+    else if (terranita && solarium && NumMine == dois)
     {
         strcpy(rocha->categoria, "Terrasol");
     }
-    else if (temAquavitae && temTerranita && qtdMinerais == dois)
+    else if (aquavitae && terranita && NumMine == dois)
     {
         strcpy(rocha->categoria, "Aquaterra");
     }
-    else if (temCalaris && temAquavitae && qtdMinerais == dois)
+    else if (calaris && aquavitae && NumMine == dois)
     {
         strcpy(rocha->categoria, "Calquer");
     }
-    else if (temSolarium && temFerrolita && qtdMinerais == dois)
+    else if (solarium && ferrolita && NumMine == dois)
     {
         strcpy(rocha->categoria, "Solarisfer");
     }
-    else if (temTerranita && temFerrolita && qtdMinerais == dois)
+    else if (terranita && ferrolita && NumMine == dois)
     {
         strcpy(rocha->categoria, "Terralis");
     }
-    else if (temAquavitae && temCalaris && temFerrolita && qtdMinerais == tres)
+    else if (aquavitae && calaris && ferrolita && NumMine == tres)
     {
         strcpy(rocha->categoria, "Aquacalis");
     }
@@ -117,9 +110,9 @@ void setCategoria(rochamineral *rocha, char *categoria)
 {
     strcpy(rocha->categoria, categoria);
 }
-void setDataColeta(rochamineral *rocha, char *dataColeta)
+void setData(rochamineral *rocha, char *data)
 {
-    strcpy(rocha->dataColeta, dataColeta);
+    strcpy(rocha->data, data);
 }
 void setLocalizacao(rochamineral *rocha, double latitude, double longitude)
 {
@@ -139,9 +132,9 @@ char *getCategoria(rochamineral *rocha)
 {
     return rocha->categoria;
 }
-char *getDataColeta(rochamineral *rocha)
+char *getData(rochamineral *rocha)
 {
-    return rocha->dataColeta;
+    return rocha->data;
 }
 double getLatitude(rochamineral *rocha)
 {

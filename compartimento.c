@@ -10,8 +10,6 @@ void FLVazia_R(L_Compart *pLista)
     pLista->pPrimeiro->pProx = NULL;
 }
 
-
-
 int LEhVazia_R(L_Compart *pLista)
 {
     return (pLista->pPrimeiro == pLista->pUltimo);
@@ -127,7 +125,7 @@ void LTroca_R(L_Compart *pLista)
     }
 
     // Armazena a categoria da rocha mais pesada
-    char catMaisPesada[40];
+    char catMaisPesada[50];
     strcpy(catMaisPesada, maisPesada->rocha.categoria);
 
     // Inicializa as variáveis para a rocha mais leve

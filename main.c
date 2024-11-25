@@ -8,24 +8,24 @@
 
 // Função principal
 int main() {
-    int N_Sondas, Escolha = 0; // Número de sondas e escolha do método de entrada
+    int N_Sondas, comando = 0; // Número de sondas e comando do método de entrada
     double lat_i, long_i; // Coordenadas iniciais da sonda
     float c_i, v_i, nc_i; // Capacidade, velocidade, e combustível inicial das sondas
     char linha[Maxtam]; // Buffer para leitura de strings
-    L_Sondas ListaSonda; // Lista de sondas
-    rochamineral rocha; // Estrutura que representa uma rocha mineral
-    Mineral minel; // Estrutura que representa um mineral
-    DadosSonda sondai; // Estrutura que representa uma sonda
+    L_Sondas LISTASONDA; // Lista de sondas
+    rochamineral ROCHA; // Estrutura que representa uma rocha mineral
+    Mineral MINEL; // Estrutura que representa um mineral
+    DadosSonda SONDA; // Estrutura que representa uma sonda
 
-    // Solicita ao usuário o método de entrada de dados (1 - Terminal, 2 - Arquivo)
+  
     printInicio();
-    while (Escolha != 1 && Escolha != 2) {
+    while (comando != 1 && comando != 2) {
         printEntrada();
-        scanf("%d", &Escolha);
+        scanf("%d", &comando);
     }
     // Entrada de dados via terminal
-    if (Escolha == 1) {
-        FLVazia_S(&ListaSonda); // Inicializa a lista de sondas como vazia
+    if (comando == 1) {
+        FLVazia_S(&LISTASONDA); // Inicializa a lista de sondas como vazia
 
         // Solicita o número de sondas e seus dados
         printNumSondas();
@@ -34,15 +34,15 @@ int main() {
         printDadosSonda();
         for (int i = 0; i < N_Sondas; i++) {
             scanf("%lf %lf %f %f %f", &lat_i, &long_i, &c_i, &v_i, &nc_i);
-            InicializaSonda(&sondai, (i + 1), lat_i, long_i, c_i, "Sim"); // Inicializa uma nova sonda
-            LInsere_S(&ListaSonda, &sondai); // Insere a sonda na lista
+            InicializaSonda(&SONDA, (i + 1), lat_i, long_i, c_i, "Sim"); // Inicializa uma nova sonda
+            LInsere_S(&LISTASONDA, &SONDA); // Insere a sonda na lista
         }
         printSucesDados();
 
-        int N_op; // Número de operações
+        int numOperacoes; // Número de operações
         printNumOper();
-        scanf("%d", &N_op);
-        for (int i = 0; i < N_op; i++) {
+        scanf("%d", &numOperacoes);
+        for (int i = 0; i < numOperacoes; i++) {
             char operacao;
             printOper();
             scanf(" %c", &operacao);
@@ -50,50 +50,50 @@ int main() {
             // Processa a operação escolhida
             switch (operacao) {
                 case 'R': { // Adicionar rochas a partir das coordenadas e minerais
-                    double lat_r, long_r;
-                    float p_r;
-                    char minerais_str[miner];
+                    double latitude, longitude;
+                    float pesoRcha;
+                    char minerais[miner];
 
                     // Recebe os dados da rocha
                     printDadosRoch();
-                    scanf("%lf %lf %f", &lat_r, &long_r, &p_r);
+                    scanf("%lf %lf %f", &latitude, &longitude, &pesoRcha);
                     getchar(); // Remove o caractere de nova linha do buffer
-                    fgets(minerais_str, sizeof(minerais_str), stdin);
-                    minerais_str[strcspn(minerais_str, "\n")] = '\0'; // Remove a quebra de linha
+                    fgets(minerais, sizeof(minerais), stdin);
+                    minerais[strcspn(minerais, "\n")] = '\0'; // Remove a quebra de linha
 
-                    const char delim[2] = " ";
-                    char *buffer = strtok(minerais_str, delim);
+                    const char delimitador[2] = " ";
+                    char *buffer = strtok(minerais, delimitador);
 
-                    FLVazia_L(&rocha.L_Mineral); // Inicializa a lista de minerais da rocha como vazia
+                    FLVazia_L(&ROCHA.L_Mineral); // Inicializa a lista de minerais da rocha como vazia
 
                     // Adiciona os minerais à lista da rocha
                     while (buffer != NULL) {
-                        Lis_Minerais(&minel, buffer);
-                        LInsere_L(&rocha.L_Mineral, minel);
-                        buffer = strtok(NULL, delim);
+                        Lis_Minerais(&MINEL, buffer);
+                        LInsere_L(&ROCHA.L_Mineral, MINEL);
+                        buffer = strtok(NULL, delimitador);
                     }
 
                     int cont = 0;
 
                     // Inicializa e insere a rocha na lista
-                    InicializaRocha(&rocha, ++cont, p_r, Categoria(&rocha), "", lat_r, long_r);
-                    Insere_S(&ListaSonda, &rocha);
+                    InicializaRocha(&ROCHA, ++cont, pesoRcha, Categoria(&ROCHA), "", latitude, longitude);
+                    Insere_S(&LISTASONDA, &ROCHA);
 
                     break;
                 }
                 case 'I': { // Executa a operação 'I'
-                    OperacaoI(&ListaSonda);
+                    OperacaoI(&LISTASONDA);
                     break;
                 }
                 case 'E': { // Executa a operação 'E'
-                    OperacaoE(&ListaSonda);
+                    OperacaoE(&LISTASONDA);
                     break;
                 }
             }
         }
     }
     // Entrada de dados via arquivo
-    else if (Escolha == 2) {
+    else if (comando == 2) {
         printNomearq();
         char nomearq[miner];
 
@@ -103,42 +103,43 @@ int main() {
 
         // Lê o número de sondas
         fscanf(arq, "%d", &N_Sondas);
-        FLVazia_S(&ListaSonda); // Inicializa a lista de sondas como vazia
+        FLVazia_S(&LISTASONDA); // Inicializa a lista de sondas como vazia
 
         // Lê e adiciona cada sonda à lista
         for (int i = 0; i < N_Sondas; i++) {
             fscanf(arq, "%lf %lf %f %f %f", &lat_i, &long_i, &c_i, &v_i, &nc_i);
-            InicializaSonda(&sondai, (i + 1), lat_i, long_i, c_i, "Sim");
-            LInsere_S(&ListaSonda, &sondai);
+            InicializaSonda(&SONDA, (i + 1), lat_i, long_i, c_i, "Sim");
+            LInsere_S(&LISTASONDA, &SONDA);
         }
 
-        int N_op; // Número de operações
-        fscanf(arq, "%d", &N_op);
+        int numOperacoes; // Número de operações
+        fscanf(arq, "%d", &numOperacoes);
 
         // Processa cada operação no arquivo
-        for (int i = 0; i < N_op; i++) {
+        for (int i = 0; i < numOperacoes; i++) {
             char opcao;
             fscanf(arq, " %c", &opcao);
 
             switch (opcao) {
                 case 'R': { // Adicionar rochas
+                    int contador = 0;
                     int c;
-                    while ((c = fgetc(arq)) != '\n' && c != EOF);
+                    double latitude, longitude;
+                    float pesoRcha;
 
-                    FLVazia_L(&rocha.L_Mineral); // Inicializa a lista de minerais da rocha como vazia
-                    double lat_r, long_r;
-                    float p_r;
+                    while ((c = fgetc(arq)) != '\n' && c != EOF);
+                    FLVazia_L(&ROCHA.L_Mineral); // Inicializa a lista de minerais da rocha como vazia
 
                     // Lê a linha com os dados da rocha
                     fgets(linha, sizeof(linha), arq);
                     linha[strcspn(linha, "\n")] = '\0';
                     // Cada chamada a strtok retorna o próximo token, que é processado (convertido em valores numéricos ou strings) e armazenado em variáveis apropriadas.
                     char *buffer = strtok(linha, " ");
-                    lat_r = atof(buffer);
+                    latitude = atof(buffer);
                     buffer = strtok(NULL, " ");
-                    long_r = atof(buffer);
+                    longitude = atof(buffer);
                     buffer = strtok(NULL, " ");
-                    p_r = atof(buffer);
+                    pesoRcha = atof(buffer);
                     buffer = strtok(NULL, " ");
 
                     // Adiciona os minerais à rocha
@@ -146,24 +147,22 @@ int main() {
                         Mineral mineral;
                         buffer[strcspn(buffer, "\n")] = '\0';
                         Lis_Minerais(&mineral, buffer);
-                        LInsere_L(&rocha.L_Mineral, mineral);
+                        LInsere_L(&ROCHA.L_Mineral, mineral);
                         buffer = strtok(NULL, " ");
                     }
 
-                    int cont = 0;
-
                     // Inicializa e insere a rocha na lista
-                    InicializaRocha(&rocha, ++cont, p_r, Categoria(&rocha), "", lat_r, long_r);
-                    Insere_S(&ListaSonda, &rocha);
+                    InicializaRocha(&ROCHA, ++contador, pesoRcha, Categoria(&ROCHA), "", latitude, longitude);
+                    Insere_S(&LISTASONDA, &ROCHA);
 
                     break;
                 }
                 case 'I': { // Executa a operação 'I'
-                    OperacaoI(&ListaSonda);
+                    OperacaoI(&LISTASONDA);
                     break;
                 }
                 case 'E': { // Executa a operação 'E'
-                    OperacaoE(&ListaSonda);
+                    OperacaoE(&LISTASONDA);
                     break;
                 }
             }
