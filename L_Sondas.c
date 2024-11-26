@@ -315,7 +315,6 @@ void OperacaoE(L_Sondas *pLista_S) {
     // Move todas as sondas para a origem
     MoverParaOrigem(pLista_S);
     printf("\nRochas redistribuidas com sucesso!!\n");
-    printf("\n");
 
 }
 void OperacaoI(L_Sondas *pLista_Sonda) {
