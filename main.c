@@ -8,6 +8,7 @@
 
 // Função principal
 int main() {
+    
     int N_Sondas, comando = 0; // Número de sondas e comando do método de entrada
     double lat_i, long_i; // Coordenadas iniciais da sonda
     float c_i, v_i, nc_i; // Capacidade, velocidade, e combustível inicial das sondas

@@ -159,7 +159,7 @@ void LTroca_R(L_Compart *pLista)
         return;
     }
 
-    // Se encontrou uma rocha mais leve e ela é diferente da rocha mais pesada, faz a troca
+    // Se encontrou uma rocha mais leve e E IGUAL  da rocha mais pesada, faz a troca
     if (maisLeve != NULL && maisLeve != maisPesada && maisLeve->rocha.peso < maisPesada->rocha.peso)
     {
         // Troca as rochas entre a mais pesada e a mais leve

@@ -64,36 +64,64 @@ void Imprime_S(L_Sondas *L_Sondas) {
 }
 
 // Calcula a distância euclidiana para encontrar a sonda mais próxima de uma rocha
+// Função que calcula a distância euclidiana entre um ponto (lat_r, long_r)
+// e as sondas na lista, retornando a sonda mais próxima ou a segunda mais próxima
+// que tenha capacidade suficiente para transportar a rocha.
 DadosSonda *CalcularEuclidiana(L_Sondas *pLista_S, double lat_r, double long_r, rochamineral *rocha) {
+    // Inicializa um ponteiro auxiliar para percorrer a lista de sondas
     Apontador_S pAux = pLista_S->pPrimeiro->pProx;
+    
+    // Ponteiros para armazenar a sonda mais próxima e a segunda mais próxima
     DadosSonda *primeiraSonda = NULL, *segundaSonda = NULL;
-    double menorDist = INFINITY, segundaMenorDist = INFINITY;
+    
+    // Variáveis para armazenar as menores distâncias encontradas
+    double menorDist = 9999999, segundaMenorDist = 9999999;
+    
+    // Variáveis temporárias para latitude, longitude e distância da sonda atual
     double lat_i, long_i, distSonda;
 
+    // Percorre a lista de sondas
     while (pAux != NULL) {
+        // Obtém a latitude e longitude da sonda atual
         lat_i = pAux->sonda.latitude;
         long_i = pAux->sonda.longitude;
-        distSonda = sqrt(pow(lat_r - lat_i, 2) + pow(long_r - long_i, 2)); // Distância euclidiana
+        
+        // Calcula a distância euclidiana entre o ponto de referência e a sonda
+        distSonda = sqrt(pow(lat_r - lat_i, 2) + pow(long_r - long_i, 2));
 
+        // Verifica se essa distância é menor que a menor distância registrada
         if (distSonda < menorDist) {
-            segundaMenorDist = menorDist; // Atualiza a segunda menor distância
+            // Atualiza a segunda menor distância e a segunda sonda
+            segundaMenorDist = menorDist;
             segundaSonda = primeiraSonda;
+            
+            // Atualiza a menor distância e a sonda mais próxima
             menorDist = distSonda;
             primeiraSonda = &pAux->sonda;
-        } else if (distSonda < segundaMenorDist) {
+        }
+        // Verifica se a distância é menor que a segunda menor distância, mas maior que a menor
+        else if (distSonda < segundaMenorDist) {
             segundaMenorDist = distSonda;
             segundaSonda = &pAux->sonda;
         }
+        
+        // Avança para o próximo nó na lista
         pAux = pAux->pProx;
     }
 
+    // Verifica se a sonda mais próxima tem capacidade para carregar a rocha
     if (primeiraSonda != NULL && PesoSonda(primeiraSonda) + rocha->peso <= primeiraSonda->capacidade) {
-        return primeiraSonda; // Retorna a primeira sonda, se houver capacidade
-    } else if (segundaSonda != NULL && PesoSonda(segundaSonda) + rocha->peso <= segundaSonda->capacidade) {
-        return segundaSonda; // Retorna a segunda sonda
+        return primeiraSonda; // Retorna a sonda mais próxima
     }
-    return primeiraSonda; // Retorna a sonda mais próxima, caso contrário
+    // Verifica se a segunda sonda mais próxima tem capacidade para carregar a rocha
+    else if (segundaSonda != NULL && PesoSonda(segundaSonda) + rocha->peso <= segundaSonda->capacidade) {
+        return segundaSonda; // Retorna a segunda sonda mais próxima
+    }
+
+    // Retorna a sonda mais próxima como fallback, mesmo sem verificar capacidade
+    return primeiraSonda;
 }
+
 
 // Insere uma rocha em uma sonda próxima
 void Insere_S(L_Sondas *pLista_S, rochamineral *rocha) {
@@ -110,7 +138,7 @@ void Insere_S(L_Sondas *pLista_S, rochamineral *rocha) {
         Apontador_R rochaMaisPesada = NULL;
         float maiorPeso = 0;
 
-        while (pAux != NULL) {
+        while (pAux != NULL) {// Verfica se a um rocha maior da mesma categoria
             if (strcmp(pAux->rocha.categoria, rocha->categoria) == 0 && pAux->rocha.peso > maiorPeso) {
                 maiorPeso = pAux->rocha.peso;
                 rochaMaisPesada = pAux;
@@ -118,9 +146,9 @@ void Insere_S(L_Sondas *pLista_S, rochamineral *rocha) {
             pAux = pAux->pProx;
         }
 
-        if (rochaMaisPesada != NULL && rochaMaisPesada->rocha.peso > rocha->peso) {
-            rochaMaisPesada->rocha = *rocha; // Substitui pela rocha mais pesada
-            printf("Rocha coletada pela sonda %d (troca por rocha mais pesada).\n", sondaTemp->idSonda);
+        if (rochaMaisPesada != NULL && rochaMaisPesada->rocha.peso < rocha->peso) {
+            rochaMaisPesada->rocha = *rocha; // Substitui pela rocha mais leve
+            printf("Rocha coletada pela sonda %d TROCADA PELA MAIS LEVE.\n", sondaTemp->idSonda);
         } else {
             printf("Impossivel coletar ou trocar rochas. Rocha descartada.\n");
         }
@@ -230,8 +258,9 @@ void Redistribuir(L_Sondas *pLista_S, rochamineral *rochas, int numRochas) {
         return; // Retorna se não há rochas para distribuir
     }
 
-    // Ordena as rochas por peso decrescente
+/////// ordena as rochas em ordem decrescente de peso, priorizando as mais pesadas
     qsort(rochas, numRochas, sizeof(rochamineral), OrdenarPorPeso);
+
 
     int numSondas = 0; // Contador de sondas
     Apontador_S pAux = pLista_S->pPrimeiro->pProx;
@@ -242,7 +271,7 @@ void Redistribuir(L_Sondas *pLista_S, rochamineral *rochas, int numRochas) {
         pAux = pAux->pProx;
     }
 
-    // Aloca memória para rastrear o peso atual de cada sonda
+    // Aloca memória para rastrear o peso acumulado de cada sonda
     float *PesoSondass = (float *)calloc(numSondas, sizeof(float));
     if (PesoSondass == NULL) { // Verifica a alocação
         perror("Erro ao alocar memória para pesos das sondas");
