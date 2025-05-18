@@ -17,9 +17,15 @@ $(EXEC): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Limpeza dos arquivos gerados
+clean_win:
+	del /Q $(OBJS) $(EXEC).exe
+
+clean_all_win:
+	del /Q *~
+
 clean:
 	rm -f $(OBJS) $(EXEC)
 
-# Limpeza total
-clean_all: clean
+clean_all:
 	rm -f *~
+
