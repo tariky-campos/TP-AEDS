@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Mineral.h"
+#include "mineral.h"
 #define zero 0
 
 void InicializaMineral(Mineral *mineral, char *nome, char *cor, double dureza, double reatividade)

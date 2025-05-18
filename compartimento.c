@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Compartimento.h"
+#include "compartimento.h"
 
 void FLVazia_R(L_Compart *pLista)
 {

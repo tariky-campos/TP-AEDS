@@ -1,6 +1,6 @@
 #ifndef DADOSSONDA_H
 #define DADOSSONDA_H
-#include "Compartimento.h"
+#include "compartimento.h"
 #define button 3
 
 typedef struct

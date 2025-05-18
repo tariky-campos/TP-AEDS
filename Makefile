@@ -10,7 +10,8 @@ all: $(EXEC)
 
 # Regra para compilar o executável
 $(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
 
 # Regra para compilar arquivos .c em .o
 %.o: %.c

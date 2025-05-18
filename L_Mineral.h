@@ -1,7 +1,7 @@
 #ifndef LISTAMINERAIS_H
 #define LISTAMINERAIS_H
 #define MAXTAM 1000
-#include "Mineral.h"
+#include "mineral.h"
 
 typedef int Apontador_L;
 
